@@ -1,8 +1,41 @@
 const User = require('../models/User');
 const Team = require('../models/Team');
 const { generateToken } = require('../middleware/auth');
+// Helper to set cookie
+const sendTokenResponse = (user, statusCode, res, message, teamCode = null) => {
+    const token = generateToken(user._id);
 
-// @desc    Register Leader & Create Team
+    const options = {
+        expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days
+        httpOnly: true,
+        // secure: true, // Enable in production with HTTPS
+    };
+
+    res.status(statusCode)
+        .cookie('token', token, options)
+        .json({
+            success: true,
+            message,
+            token,
+            teamCode,
+            user: {
+                id: user._id,
+                name: user.name,
+                role: user.role,
+                teamId: user.teamId ? user.teamId._id : null
+            },
+            team: user.teamId ? {
+                id: user.teamId._id,
+                teamName: user.teamId.teamName,
+                teamCode: user.teamId.teamCode,
+                collegeName: user.teamId.collegeName,
+                rank: user.teamId.rank,
+                totalPoints: user.teamId.totalPoints
+            } : null
+        });
+};
+
+// Protect routes - verify JWT token
 // @route   POST /api/auth/register-leader
 // @access  Public
 exports.registerLeader = async (req, res) => {
@@ -70,21 +103,7 @@ exports.registerLeader = async (req, res) => {
         user.teamId = team._id;
         await user.save();
 
-        // Generate token
-        const token = generateToken(user._id);
-
-        res.status(201).json({
-            success: true,
-            message: 'Team registered successfully',
-            token,
-            teamCode, // Return code to show leader
-            user: {
-                id: user._id,
-                name: user.name,
-                role: user.role,
-                teamId: team._id
-            }
-        });
+        sendTokenResponse(user, 201, res, 'Team registered successfully', teamCode);
 
     } catch (error) {
         console.error('Leader Registration error:', error);
@@ -154,19 +173,7 @@ exports.registerMember = async (req, res) => {
         team.members.push(user._id);
         await team.save();
 
-        const token = generateToken(user._id);
-
-        res.status(201).json({
-            success: true,
-            message: 'Joined team successfully',
-            token,
-            user: {
-                id: user._id,
-                name: user.name,
-                role: user.role,
-                teamId: team._id
-            }
-        });
+        sendTokenResponse(user, 201, res, 'Joined team successfully');
 
     } catch (error) {
         console.error('Member Registration error:', error);
@@ -210,28 +217,7 @@ exports.login = async (req, res) => {
             });
         }
 
-        const token = generateToken(user._id);
-
-        res.status(200).json({
-            success: true,
-            message: 'Login successful',
-            token,
-            user: {
-                id: user._id,
-                name: user.name,
-                role: user.role,
-                phone: user.phone,
-                teamId: user.teamId ? user.teamId._id : null
-            },
-            team: user.teamId ? {
-                id: user.teamId._id,
-                teamName: user.teamId.teamName,
-                teamCode: user.teamId.teamCode,
-                collegeName: user.teamId.collegeName,
-                rank: user.teamId.rank,
-                totalPoints: user.teamId.totalPoints
-            } : null
-        });
+        sendTokenResponse(user, 200, res, 'Login successful');
 
     } catch (error) {
         console.error('Login error:', error);
@@ -240,7 +226,16 @@ exports.login = async (req, res) => {
             message: 'Server error during login'
         });
     }
-};
+}
+
+
+// Replace strict res.json responses with helper in key controllers
+// ... logic below modifies existing controller flows to use helper ...
+
+// NOTE: For brevity and precision in this tool call, I will modify the specific sections in subsequent calls 
+// or use a larger replace block if I can match the whole file structure. 
+// However, given the file size, I will modify the specific blocks for login, registerLeader, registerMember.
+
 
 // @desc    Get current logged in user
 // @route   GET /api/auth/me

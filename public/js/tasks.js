@@ -1,58 +1,41 @@
 // Task Management System
-// Handles tasks, deadlines, and submissions
+// Handles tasks, deadlines, and submissions using Backend API
 
 const TaskManager = {
-    // Predefined tasks with deadlines
-    tasks: [
-        {
-            id: 'task-1',
-            title: 'Market Research Report',
-            description: 'Conduct comprehensive market research for your proposed idea. Include target audience, market size, trends, and opportunities.',
-            deadline: '2026-02-15T23:59:59',
-            maxMarks: 100,
-            phase: 'Round 1'
-        },
-        {
-            id: 'task-2',
-            title: 'Problem Statement',
-            description: 'Define the core problem your startup aims to solve. Explain why this problem is important and who it affects.',
-            deadline: '2026-02-10T23:59:59',
-            maxMarks: 100,
-            phase: 'Round 1'
-        },
-        {
-            id: 'task-3',
-            title: 'Competitor Analysis',
-            description: 'Identify and analyze your top 5 competitors. Compare features, pricing, strengths, and weaknesses.',
-            deadline: '2026-02-18T23:59:59',
-            maxMarks: 100,
-            phase: 'Round 1'
-        },
-        {
-            id: 'task-4',
-            title: 'Business Model Canvas',
-            description: 'Create a detailed Business Model Canvas covering all 9 building blocks for your startup idea.',
-            deadline: '2026-02-23T23:59:59',
-            maxMarks: 150,
-            phase: 'Round 1'
-        },
-        {
-            id: 'task-5',
-            title: 'Idea Pitch Deck',
-            description: 'Create a compelling 10-slide pitch deck presenting your startup idea, problem, solution, and team.',
-            deadline: '2026-02-05T23:59:59',
-            maxMarks: 100,
-            phase: 'Round 1'
-        },
-        {
-            id: 'task-6',
-            title: 'Team Introduction Video',
-            description: 'Record a 2-3 minute video introducing your team members, their roles, and why you\'re passionate about this idea.',
-            deadline: '2026-02-25T23:59:59',
-            maxMarks: 50,
-            phase: 'Round 1'
+    tasks: [],
+    submissions: {},
+
+    // Initialize: Fetch tasks and submissions
+    init: async function () {
+        await this.fetchTasks();
+        await this.fetchSubmissions();
+        this.renderAllTasks();
+    },
+
+    // Fetch tasks from API
+    fetchTasks: async function () {
+        const result = await API.getTasks();
+        if (result.success) {
+            this.tasks = result.tasks;
+        } else {
+            console.error('Failed to load tasks:', result.message);
+            // alert('Failed to load tasks. Please refresh.'); 
         }
-    ],
+    },
+
+    // Fetch user's submissions from API
+    fetchSubmissions: async function () {
+        const result = await API.getMySubmissions();
+        if (result.success) {
+            // Convert array to object map for easier lookup: { taskId: submission }
+            this.submissions = {};
+            result.submissions.forEach(sub => {
+                this.submissions[sub.taskId] = sub;
+            });
+        } else {
+            console.error('Failed to load submissions:', result.message);
+        }
+    },
 
     // Check if task deadline has passed
     isDeadlinePassed: function (deadline) {
@@ -63,13 +46,13 @@ const TaskManager = {
 
     // Get task status
     getTaskStatus: function (taskId) {
-        const submissions = this.getSubmissions();
+        const submission = this.submissions[taskId];
         const task = this.tasks.find(t => t.id === taskId);
 
         if (!task) return 'unknown';
 
         // Check if submitted
-        if (submissions[taskId]) {
+        if (submission) {
             return 'submitted';
         }
 
@@ -81,62 +64,28 @@ const TaskManager = {
         return 'active';
     },
 
-    // Get all submissions from localStorage
-    getSubmissions: function () {
-        try {
-            const submissions = localStorage.getItem('tec_submissions');
-            return submissions ? JSON.parse(submissions) : {};
-        } catch (error) {
-            console.error('Error fetching submissions:', error);
-            return {};
-        }
-    },
-
     // Submit a task
-    submitTask: function (taskId, fileName) {
-        try {
-            const task = this.tasks.find(t => t.id === taskId);
-            if (!task) {
-                return { success: false, message: 'Task not found' };
-            }
-
-            // Check if deadline passed
-            if (this.isDeadlinePassed(task.deadline)) {
-                return { success: false, message: 'Deadline has passed' };
-            }
-
-            // Get existing submissions
-            const submissions = this.getSubmissions();
-
-            // Check if already submitted
-            if (submissions[taskId]) {
-                return { success: false, message: 'Task already submitted' };
-            }
-
-            // Add new submission
-            submissions[taskId] = {
-                taskId: taskId,
-                taskTitle: task.title,
-                fileName: fileName,
-                submittedOn: new Date().toISOString(),
-                status: 'pending'
-            };
-
-            // Save to localStorage
-            localStorage.setItem('tec_submissions', JSON.stringify(submissions));
-
-            return { success: true, message: 'Task submitted successfully!' };
-
-        } catch (error) {
-            console.error('Submission error:', error);
-            return { success: false, message: 'Submission failed. Please try again.' };
+    submitTask: async function (taskId, file) {
+        const task = this.tasks.find(t => t.id === taskId);
+        if (!task) {
+            return { success: false, message: 'Task not found' };
         }
-    },
 
-    // Get submission for a task
-    getSubmission: function (taskId) {
-        const submissions = this.getSubmissions();
-        return submissions[taskId] || null;
+        // Check if deadline passed
+        if (this.isDeadlinePassed(task.deadline)) {
+            return { success: false, message: 'Deadline has passed' };
+        }
+
+        // Call API
+        const result = await API.submitTask(taskId, file);
+
+        if (result.success) {
+            // Update local state
+            await this.fetchSubmissions(); // Refresh submissions to get the new one
+            return { success: true, message: 'Task submitted successfully!' };
+        } else {
+            return { success: false, message: result.message };
+        }
     },
 
     // Format deadline for display
@@ -174,21 +123,36 @@ const TaskManager = {
         }
     },
 
+    // Render all tasks
+    renderAllTasks: function () {
+        const container = document.getElementById('tasks-container');
+        if (!container) return;
+
+        if (this.tasks.length === 0) {
+            container.innerHTML = '<p class="text-center text-muted">No active tasks found.</p>';
+            return;
+        }
+
+        container.innerHTML = this.tasks.map(task => this.renderTaskCard(task)).join('');
+    },
+
     // Render task card HTML
     renderTaskCard: function (task) {
         const status = this.getTaskStatus(task.id);
-        const submission = this.getSubmission(task.id);
+        const submission = this.submissions[task.id];
         const timeRemaining = this.getTimeRemaining(task.deadline);
 
         let statusBadge = '';
         let submitButton = '';
+        const phaseName = task.phase ? task.phase.name : 'Round 1';
 
         if (status === 'submitted') {
             statusBadge = '<span class="badge badge-success">Submitted</span>';
             submitButton = `
                 <div style="margin-top: 1rem; padding: 1rem; background: rgba(0, 255, 0, 0.1); border-radius: 8px;">
                     <p class="text-muted mb-sm"><strong>Submitted:</strong> ${submission.fileName}</p>
-                    <p class="text-muted mb-0"><strong>On:</strong> ${this.formatDeadline(submission.submittedOn)}</p>
+                    <p class="text-muted mb-0"><strong>On:</strong> ${this.formatDeadline(submission.submittedAt)}</p>
+                    ${submission.status === 'graded' ? `<p class="mt-sm text-white"><strong>Marks:</strong> ${submission.marks}/${task.maxMarks}</p>` : ''}
                 </div>
             `;
         } else if (status === 'closed') {
@@ -207,7 +171,7 @@ const TaskManager = {
         return `
             <div class="card">
                 <div class="flex-between mb-md">
-                    <span class="badge badge-red">${task.phase}</span>
+                    <span class="badge badge-red">${phaseName}</span>
                     ${statusBadge}
                 </div>
                 <h3 class="mb-md">${task.title}</h3>
@@ -223,7 +187,7 @@ const TaskManager = {
 };
 
 // File upload handler
-function handleFileSelect(taskId, input) {
+async function handleFileSelect(taskId, input) {
     const file = input.files[0];
 
     if (!file) return;
@@ -235,27 +199,41 @@ function handleFileSelect(taskId, input) {
         return;
     }
 
-    // Validate file size (max 10MB)
-    if (file.size > 10 * 1024 * 1024) {
-        alert('File size should not exceed 10MB');
+    // Validate file size (max 5MB as per backend)
+    if (file.size > 5 * 1024 * 1024) {
+        alert('File size should not exceed 5MB');
         input.value = '';
         return;
     }
 
+    const btnId = `file-${taskId}`;
+    const btn = input.nextElementSibling; // The button that triggered the click
+    const originalText = btn.textContent;
+    btn.textContent = 'Uploading...';
+    btn.disabled = true;
+
     // Submit task
-    const result = TaskManager.submitTask(taskId, file.name);
+    const result = await TaskManager.submitTask(taskId, file);
 
     if (result.success) {
-        showNotification(result.message, 'success');
-        // Reload tasks to update UI
-        setTimeout(() => {
-            window.location.reload();
-        }, 1000);
+        // showNotification(result.message, 'success');
+        alert(result.message);
+        // Refresh UI
+        TaskManager.renderAllTasks();
     } else {
         alert(result.message);
         input.value = '';
+        btn.textContent = originalText;
+        btn.disabled = false;
     }
 }
+
+// Initialize on load
+document.addEventListener('DOMContentLoaded', () => {
+    if (window.API && window.API.isLoggedIn()) {
+        TaskManager.init();
+    }
+});
 
 // Make TaskManager available globally
 window.TaskManager = TaskManager;

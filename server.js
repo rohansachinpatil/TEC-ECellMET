@@ -12,6 +12,7 @@ const startServer = async () => {
     await connectDB();
 
     // Middleware
+    app.use(require('cookie-parser')());
     app.use(cors());
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
@@ -21,7 +22,7 @@ const startServer = async () => {
     app.use('/api/admin', require('./routes/admin'));
     app.use('/api/auth', require('./routes/auth'));
     app.use('/api/submissions', require('./routes/submissions'));
-    // app.use('/api/tasks', require('./routes/tasks')); // Uncomment when ready
+    app.use('/api/tasks', require('./routes/tasks'));
 
     // Frontend Routes (Serving HTML files)
     app.get('/', (req, res) => {

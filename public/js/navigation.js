@@ -59,6 +59,54 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
+    // Check login status and update navbar
+    const updateNavbar = async () => {
+        let isLoggedIn = API.isLoggedIn();
+
+        if (!isLoggedIn) {
+            // Try server session
+            const session = await API.checkSession();
+            if (session.success) {
+                isLoggedIn = true;
+            }
+        }
+
+        const loginLink = document.querySelector('a[href="/login"]');
+        const registerLink = document.querySelector('a[href="/register"]');
+        const navbarMenu = document.getElementById('navbarMenu');
+
+        if (isLoggedIn) {
+            if (loginLink) loginLink.style.display = 'none';
+            if (registerLink) registerLink.style.display = 'none';
+
+            // Add Dashboard link if not present
+            if (!document.querySelector('a[href="/dashboard"]')) {
+                const dashboardLink = document.createElement('a');
+                dashboardLink.href = '/dashboard';
+                dashboardLink.className = 'navbar-link';
+                dashboardLink.textContent = 'Dashboard';
+                navbarMenu.appendChild(dashboardLink);
+            }
+
+            // Add Logout link
+            if (!document.querySelector('#logoutBtn')) {
+                const logoutLink = document.createElement('a');
+                logoutLink.href = '#';
+                logoutLink.className = 'navbar-link';
+                logoutLink.id = 'logoutBtn';
+                logoutLink.textContent = 'Logout';
+                logoutLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    API.logout();
+                    window.location.href = '/login';
+                });
+                navbarMenu.appendChild(logoutLink);
+            }
+        }
+    };
+
+    updateNavbar();
+
     // Highlight active page in navbar
     const currentPath = window.location.pathname;
     document.querySelectorAll('.navbar-link').forEach(link => {

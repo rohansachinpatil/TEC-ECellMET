@@ -97,6 +97,10 @@
                     </div>
                 </div>
 
+                <div id="loginError" class="text-center text-red mb-md"
+                    style="display: none; background: rgba(255, 0, 0, 0.1); padding: 10px; border-radius: 8px; font-size: 0.9rem;">
+                </div>
+
                 <button type="submit" class="btn btn-primary btn-full btn-lg mt-lg" id="submitBtn">Login</button>
 
                 <p class="text-center text-muted mt-md">
@@ -126,27 +130,37 @@
 
             const phone = document.getElementById('phone').value;
             const password = document.getElementById('password').value;
+            const errorDiv = document.getElementById('loginError');
 
             // Show loading state
             const submitBtn = document.getElementById('submitBtn');
             const form = document.getElementById('loginForm');
             submitBtn.textContent = 'Logging in...';
+            submitBtn.disabled = true;
             form.classList.add('loading');
+            if (errorDiv) errorDiv.style.display = 'none';
 
             // Call API
             const result = await API.login(phone, password);
 
             // Remove loading state
             submitBtn.textContent = 'Login';
+            submitBtn.disabled = false;
             form.classList.remove('loading');
 
             if (result.success) {
+
+
                 // Redirect to dashboard
-                setTimeout(() => {
-                    window.location.href = '/dashboard';
-                }, 500);
+                window.location.href = '/dashboard';
             } else {
-                alert('❌ Login failed: ' + result.message);
+                // Show error
+                if (errorDiv) {
+                    errorDiv.textContent = '❌ ' + result.message;
+                    errorDiv.style.display = 'block';
+                } else {
+                    alert('❌ Login failed: ' + result.message);
+                }
 
                 // Clear password field
                 document.getElementById('password').value = '';

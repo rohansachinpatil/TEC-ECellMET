@@ -17,13 +17,13 @@
     --white-40: rgba(255, 255, 255, 0.4);
     --white-20: rgba(255, 255, 255, 0.2);
     --white-10: rgba(255, 255, 255, 0.1);
-    
+
     /* Status Colors */
     --success: #10b981;
     --warning: #f59e0b;
     --error: #ef4444;
     --info: #3b82f6;
-    
+
     /* Spacing */
     --spacing-xs: 0.5rem;
     --spacing-sm: 1rem;
@@ -31,19 +31,19 @@
     --spacing-lg: 2rem;
     --spacing-xl: 3rem;
     --spacing-2xl: 4rem;
-    
+
     /* Border Radius */
     --radius-sm: 4px;
     --radius-md: 8px;
     --radius-lg: 12px;
     --radius-xl: 16px;
     --radius-full: 9999px;
-    
+
     /* Transitions */
     --transition-fast: 0.15s ease;
     --transition-base: 0.3s ease;
     --transition-slow: 0.5s ease;
-    
+
     /* Shadows */
     --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
     --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.4);
@@ -88,7 +88,12 @@ ul {
 }
 
 /* ========== TYPOGRAPHY ========== */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     font-family: 'Orbitron', sans-serif;
     font-weight: 700;
     line-height: 1.2;
@@ -191,9 +196,17 @@ p {
     flex-direction: column;
 }
 
-.gap-sm { gap: var(--spacing-sm); }
-.gap-md { gap: var(--spacing-md); }
-.gap-lg { gap: var(--spacing-lg); }
+.gap-sm {
+    gap: var(--spacing-sm);
+}
+
+.gap-md {
+    gap: var(--spacing-md);
+}
+
+.gap-lg {
+    gap: var(--spacing-lg);
+}
 
 /* ========== CARDS ========== */
 .card {
@@ -390,6 +403,8 @@ p {
     font-family: 'Inter', sans-serif;
     font-size: 1rem;
     transition: all var(--transition-fast);
+    position: relative;
+    z-index: 1;
 }
 
 .form-input:focus,
@@ -398,6 +413,8 @@ p {
     outline: none;
     border-color: var(--f1-red);
     box-shadow: 0 0 0 3px rgba(255, 24, 1, 0.1);
+    position: relative;
+    z-index: 10;
 }
 
 .form-input::placeholder {
@@ -584,21 +601,57 @@ p {
 }
 
 /* ========== UTILITIES ========== */
-.text-center { text-align: center; }
-.text-red { color: var(--f1-red); }
-.text-muted { color: var(--white-60); }
+.text-center {
+    text-align: center;
+}
 
-.mt-0 { margin-top: 0; }
-.mt-sm { margin-top: var(--spacing-sm); }
-.mt-md { margin-top: var(--spacing-md); }
-.mt-lg { margin-top: var(--spacing-lg); }
-.mt-xl { margin-top: var(--spacing-xl); }
+.text-red {
+    color: var(--f1-red);
+}
 
-.mb-0 { margin-bottom: 0; }
-.mb-sm { margin-bottom: var(--spacing-sm); }
-.mb-md { margin-bottom: var(--spacing-md); }
-.mb-lg { margin-bottom: var(--spacing-lg); }
-.mb-xl { margin-bottom: var(--spacing-xl); }
+.text-muted {
+    color: var(--white-60);
+}
+
+.mt-0 {
+    margin-top: 0;
+}
+
+.mt-sm {
+    margin-top: var(--spacing-sm);
+}
+
+.mt-md {
+    margin-top: var(--spacing-md);
+}
+
+.mt-lg {
+    margin-top: var(--spacing-lg);
+}
+
+.mt-xl {
+    margin-top: var(--spacing-xl);
+}
+
+.mb-0 {
+    margin-bottom: 0;
+}
+
+.mb-sm {
+    margin-bottom: var(--spacing-sm);
+}
+
+.mb-md {
+    margin-bottom: var(--spacing-md);
+}
+
+.mb-lg {
+    margin-bottom: var(--spacing-lg);
+}
+
+.mb-xl {
+    margin-bottom: var(--spacing-xl);
+}
 
 /* ========== ANIMATIONS ========== */
 @keyframes fadeIn {
@@ -606,6 +659,7 @@ p {
         opacity: 0;
         transform: translateY(20px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -617,6 +671,7 @@ p {
         opacity: 0;
         transform: translateX(-30px);
     }
+
     to {
         opacity: 1;
         transform: translateX(0);
@@ -628,6 +683,7 @@ p {
         opacity: 0;
         transform: translateX(30px);
     }
+
     to {
         opacity: 1;
         transform: translateX(0);
@@ -661,23 +717,23 @@ p {
         transition: left var(--transition-base);
         border-top: 1px solid var(--white-10);
     }
-    
+
     .navbar-menu.active {
         left: 0;
     }
-    
+
     .menu-toggle {
         display: flex;
     }
-    
+
     .sidebar {
         width: 200px;
     }
-    
+
     .main-content {
         margin-left: 200px;
     }
-    
+
     .grid-2,
     .grid-3,
     .grid-4 {
@@ -693,7 +749,7 @@ p {
         border-right: none;
         border-bottom: 1px solid var(--white-10);
     }
-    
+
     .main-content {
         margin-left: 0;
     }

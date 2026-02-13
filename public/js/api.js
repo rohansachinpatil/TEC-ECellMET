@@ -1,5 +1,70 @@
 // API Base URL
-const API_URL = 'http://localhost:8080/api';
+// API Base URL
+const API_URL = '/api';
+
+// API Helper Functions
+// Safe Storage Helper
+// Safe Storage Helper (localStorage -> sessionStorage -> Cookie Fallback)
+const safeStorage = {
+    setItem: (key, value) => {
+        try {
+            localStorage.setItem(key, value);
+        } catch (e) {
+            console.warn('LocalStorage failed, trying cookie...', e);
+            setCookie(key, value, 7); // Fallback to cookie (7 days)
+        }
+    },
+    getItem: (key) => {
+        try {
+            const item = localStorage.getItem(key);
+            if (item) return item;
+            throw new Error('NotFound');
+        } catch (e) {
+            return getCookie(key); // Fallback to cookie
+        }
+    },
+    removeItem: (key) => {
+        try {
+            localStorage.removeItem(key);
+        } catch (e) {
+            deleteCookie(key);
+        }
+    }
+};
+
+// Cookie Helpers
+function setCookie(name, value, days) {
+    try {
+        let expires = "";
+        if (days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            expires = "; expires=" + date.toUTCString();
+        }
+        document.cookie = name + "=" + (encodeURIComponent(value) || "") + expires + "; path=/";
+    } catch (e) {
+        console.error("Cookie set failed", e);
+    }
+}
+
+function getCookie(name) {
+    try {
+        const nameEQ = name + "=";
+        const ca = document.cookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) === 0) return decodeURIComponent(c.substring(nameEQ.length, c.length));
+        }
+        return null;
+    } catch (e) {
+        return null;
+    }
+}
+
+function deleteCookie(name) {
+    document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+}
 
 // API Helper Functions
 const API = {
@@ -22,8 +87,8 @@ const API = {
 
             // Store token in localStorage
             if (resData.token) {
-                localStorage.setItem('token', resData.token);
-                localStorage.setItem('user', JSON.stringify(resData.user));
+                safeStorage.setItem('token', resData.token);
+                safeStorage.setItem('user', JSON.stringify(resData.user));
             }
 
             return { success: true, teamCode: resData.teamCode };
@@ -51,8 +116,8 @@ const API = {
 
             // Store token in localStorage
             if (resData.token) {
-                localStorage.setItem('token', resData.token);
-                localStorage.setItem('user', JSON.stringify(resData.user));
+                safeStorage.setItem('token', resData.token);
+                safeStorage.setItem('user', JSON.stringify(resData.user));
             }
 
             return { success: true };
@@ -80,9 +145,9 @@ const API = {
 
             // Store token in localStorage
             if (data.token) {
-                localStorage.setItem('token', data.token);
-                localStorage.setItem('user', JSON.stringify(data.user));
-                localStorage.setItem('team', JSON.stringify(data.team));
+                safeStorage.setItem('token', data.token);
+                safeStorage.setItem('user', JSON.stringify(data.user));
+                safeStorage.setItem('team', JSON.stringify(data.team));
             }
 
             return { success: true, data };
@@ -94,7 +159,7 @@ const API = {
     // Get current user
     getCurrentUser: async () => {
         try {
-            const token = localStorage.getItem('token');
+            const token = safeStorage.getItem('token');
             if (!token) {
                 throw new Error('No token found');
             }
@@ -120,7 +185,7 @@ const API = {
     // Get all tasks
     getTasks: async () => {
         try {
-            const token = localStorage.getItem('token');
+            const token = safeStorage.getItem('token');
             if (!token) {
                 throw new Error('No token found');
             }
@@ -146,7 +211,7 @@ const API = {
     // Submit task
     submitTask: async (taskId, file) => {
         try {
-            const token = localStorage.getItem('token');
+            const token = safeStorage.getItem('token');
             if (!token) {
                 throw new Error('No token found');
             }
@@ -178,7 +243,7 @@ const API = {
     // Get my submissions (all or specific)
     getMySubmissions: async () => {
         try {
-            const token = localStorage.getItem('token');
+            const token = safeStorage.getItem('token');
             if (!token) {
                 throw new Error('No token found');
             }
@@ -219,27 +284,48 @@ const API = {
 
     // Logout
     logout: () => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-        localStorage.removeItem('team');
+        safeStorage.removeItem('token');
+        safeStorage.removeItem('user');
+        safeStorage.removeItem('team');
         return { success: true };
     },
 
     // Check if logged in
     isLoggedIn: () => {
-        return !!localStorage.getItem('token');
+        return !!safeStorage.getItem('token');
     },
 
     // Get stored team data
     getStoredTeam: () => {
-        const team = localStorage.getItem('team');
+        const team = safeStorage.getItem('team');
         return team ? JSON.parse(team) : null;
     },
 
     // Get stored user data
     getStoredUser: () => {
-        const user = localStorage.getItem('user');
+        const user = safeStorage.getItem('user');
         return user ? JSON.parse(user) : null;
+    },
+
+    // Check session with server (Cookie Auth)
+    checkSession: async () => {
+        try {
+            const response = await fetch(`${API_URL}/auth/me`);
+            const data = await response.json();
+
+            if (response.ok && data.success) {
+                // Session is valid (cookie worked), try to sync local storage if possible
+                if (window.safeStorage) {
+                    safeStorage.setItem('user', JSON.stringify(data.user));
+                    if (data.team) safeStorage.setItem('team', JSON.stringify(data.team));
+                    // We don't have the token string here (httpOnly), but we don't need it if cookies work
+                }
+                return { success: true, user: data.user, team: data.team };
+            }
+            return { success: false };
+        } catch (error) {
+            return { success: false };
+        }
     }
 };
 

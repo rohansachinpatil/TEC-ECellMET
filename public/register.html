@@ -29,6 +29,8 @@
         .register-card {
             max-width: 600px;
             width: 100%;
+            position: relative;
+            z-index: 2;
         }
 
         .password-toggle {
@@ -84,6 +86,8 @@
         .form-section.active {
             display: block;
             animation: fadeIn 0.5s ease;
+            position: relative;
+            z-index: 5;
         }
 
         @keyframes fadeIn {
@@ -301,8 +305,38 @@
             const result = await API.registerLeader(data);
 
             if (result.success) {
-                alert(`✅ Registration Successful!\nYour Team Code is: ${result.teamCode}\nShare this code with your members.`);
-                window.location.href = '/dashboard';
+                // Create a modal-like overlay for the success message
+                const overlay = document.createElement('div');
+                overlay.style.position = 'fixed';
+                overlay.style.top = '0';
+                overlay.style.left = '0';
+                overlay.style.width = '100%';
+                overlay.style.height = '100%';
+                overlay.style.background = 'rgba(0,0,0,0.85)';
+                overlay.style.display = 'flex';
+                overlay.style.alignItems = 'center';
+                overlay.style.justifyContent = 'center';
+                overlay.style.zIndex = '1000';
+                overlay.style.backdropFilter = 'blur(5px)';
+
+                overlay.innerHTML = `
+                    <div class="glass-card" style="max-width: 400px; width: 90%; text-align: center; border: 1px solid var(--f1-red); box-shadow: 0 0 30px rgba(255, 0, 0, 0.2);">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">🎉</div>
+                        <h2 class="text-red mb-md">Registration Successful!</h2>
+                        <p class="text-muted mb-lg">Your team has been registered.</p>
+                        
+                        <div style="background: rgba(255, 255, 255, 0.1); padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem; border: 1px dashed rgba(255, 255, 255, 0.3);">
+                            <p class="text-muted mb-sm" style="font-size: 0.9rem;">YOUR TEAM CODE</p>
+                            <h1 class="text-white mb-0" style="font-size: 3rem; letter-spacing: 2px;">${result.teamCode}</h1>
+                            <p class="text-muted mt-sm" style="font-size: 0.8rem;">Share this code with your 4 team members</p>
+                        </div>
+
+                        <button class="btn btn-primary btn-full" onclick="window.location.href = '/dashboard'">Go to Dashboard</button>
+                    </div>
+                `;
+
+                document.body.appendChild(overlay);
+
             } else {
                 alert('❌ Error: ' + result.message);
                 btn.textContent = originalText;

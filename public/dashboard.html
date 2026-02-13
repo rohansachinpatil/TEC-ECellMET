@@ -109,52 +109,106 @@
     <script src="/js/api.js"></script>
     <script src="/js/navigation.js"></script>
     <script src="/js/main.js"></script>
+    <div id="pageLoader"
+        style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+        <div class="loader"
+            style="border: 3px solid rgba(255,255,255,0.1); border-top: 3px solid var(--f1-red); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom: 1rem;">
+        </div>
+        <p class="text-muted">Loading Dashboard...</p>
+    </div>
+
+    <script src="/js/api.js"></script>
+    <script src="/js/navigation.js"></script>
+    <script src="/js/main.js"></script>
     <script>
-        // Protect page - redirect to login if not authenticated
-        if (!API.isLoggedIn()) {
-            window.location.href = '/login';
-        }
+        // Use an async IIFE for initialization to handle auth properly
+        (async function initDashboard() {
+            const loader = document.getElementById('pageLoader');
 
-        // Load dashboard data
-        async function loadDashboard() {
+            // 1. Check Token Existence
+            if (!API.isLoggedIn()) {
+                console.warn('No token found, redirecting to login...');
+                window.location.href = '/login';
+                return;
+            }
+
             try {
-                // Get stored user and team data
-                const user = API.getStoredUser();
-                const team = API.getStoredTeam();
+                // 2. Ensure User Data (Fetch from API if missing in storage)
+                let user = API.getStoredUser();
+                let team = API.getStoredTeam();
 
-                // Show Admin Link if applicable
-                if (user && (user.role === 'admin' || user.role === 'super_admin')) {
-                    document.querySelector('.admin-only').style.display = 'flex';
-                }
+                if (!user) {
+                    console.log('User data missing in storage, fetching from API...');
+                    const result = await API.getCurrentUser();
+                    if (result.success) {
+                        user = result.data.user;
+                        team = result.data.team;
 
-                if (team) {
-                    // Update stats cards
-                    document.getElementById('teamNameStat').textContent = team.teamName;
-                    document.getElementById('rankStat').textContent = '#' + (team.rank || '12');
-                    document.getElementById('pointsStat').textContent = team.totalPoints || '0';
-                    document.getElementById('collegeStat').textContent = team.collegeName;
-
-                    // Show Team Code only for Leader
-                    if (user.role === 'leader') {
-                        document.getElementById('teamCodeDisplay').textContent = team.teamCode || 'N/A';
+                        // Try to save again for next time (optional)
+                        try {
+                            // Only if storage/cookie works
+                            if (window.safeStorage) {
+                                safeStorage.setItem('user', JSON.stringify(user));
+                                if (team) safeStorage.setItem('team', JSON.stringify(team));
+                            }
+                        } catch (e) {
+                            console.warn('Failed to cache user data:', e);
+                        }
                     } else {
-                        document.getElementById('teamCodeContainer').style.display = 'none';
+                        throw new Error('Failed to validate session: ' + result.message);
                     }
                 }
 
-                // Fetch tasks from backend
+                // 3. Render Dashboard with validated user/team
+                renderDashboard(user, team);
+
+                // 4. Hide Loader
+                if (loader) loader.style.display = 'none';
+
+                // 5. Load Tasks
                 await loadTasks();
 
             } catch (error) {
-                console.error('Dashboard load error:', error);
-                // alert('Error loading dashboard. Please try logging in again.');
-                // window.location.href = '/login';
+                console.error('Dashboard init error:', error);
+                alert('Session expired or invalid. Please login again.');
+                API.logout(); // Clear potentially bad data
+                window.location.href = '/login';
+            }
+        })();
+
+        function renderDashboard(user, team) {
+            // Show Admin Link if applicable
+            if (user && (user.role === 'admin' || user.role === 'super_admin')) {
+                const adminLink = document.querySelector('.admin-only');
+                if (adminLink) adminLink.style.display = 'flex';
+            }
+
+            if (team) {
+                // Update stats cards
+                const valid = (id) => document.getElementById(id);
+                if (valid('teamNameStat')) document.getElementById('teamNameStat').textContent = team.teamName;
+                if (valid('rankStat')) document.getElementById('rankStat').textContent = '#' + (team.rank || '12');
+                if (valid('pointsStat')) document.getElementById('pointsStat').textContent = team.totalPoints || '0';
+                if (valid('collegeStat')) document.getElementById('collegeStat').textContent = team.collegeName;
+
+                // Show Team Code only for Leader
+                if (user.role === 'leader') {
+                    if (valid('teamCodeDisplay')) document.getElementById('teamCodeDisplay').textContent = team.teamCode || 'N/A';
+                } else {
+                    const codeContainer = document.getElementById('teamCodeContainer');
+                    if (codeContainer) codeContainer.style.display = 'none';
+                }
+            } else {
+                // Handle case where user has no team (unlikely for this app logic but safety net)
+                console.warn('User has no team data');
             }
         }
 
         // Load tasks from backend
         async function loadTasks() {
             const tasksContainer = document.getElementById('tasksContainer');
+            if (!tasksContainer) return;
+
             tasksContainer.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; padding: 2rem;"><p class="text-muted">Loading tasks...</p></div>';
 
             const result = await API.getTasks();
@@ -174,14 +228,15 @@
             // Get submissions to check status
             const submissionsResult = await API.getMySubmissions();
             const submissions = submissionsResult.success ? submissionsResult.submissions : [];
-            const submittedTaskIds = submissions.map(sub => sub.task.id);
+            const submittedTaskIds = submissions.map(sub => sub.submission ? sub.submission.taskId : sub.taskId); // Handle population
 
             // Clear container
             tasksContainer.innerHTML = '';
 
             // Render each task
             tasks.forEach(task => {
-                const isSubmitted = submittedTaskIds.includes(task.id);
+                // Robust check for submission match, considering ObjectId vs String
+                const isSubmitted = submittedTaskIds.some(id => id.toString() === task.id.toString());
                 const isExpired = task.isExpired || new Date() > new Date(task.deadline);
 
                 tasksContainer.innerHTML += renderTaskCard(task, isSubmitted, isExpired);
@@ -213,7 +268,7 @@
             return `
                 <div class="card">
                     <div class="flex-between mb-md">
-                        <span class="badge badge-red">${task.phase}</span>
+                        <span class="badge badge-red">${task.phase ? task.phase.name : 'Round 1'}</span>
                         ${statusBadge}
                     </div>
                     <h3 class="mb-md">${task.title}</h3>
@@ -246,8 +301,13 @@
                 return;
             }
 
+            const btn = input.nextElementSibling;
+            const originalText = btn.textContent;
+            btn.textContent = 'Uploading...';
+            btn.disabled = true;
+
             // Submit task
-            const result = await API.submitTask(taskId, file.name);
+            const result = await API.submitTask(taskId, file);
 
             if (result.success) {
                 alert('✅ Task submitted successfully!');
@@ -255,6 +315,8 @@
             } else {
                 alert('❌ Submission failed: ' + result.message);
                 input.value = '';
+                btn.textContent = originalText;
+                btn.disabled = false;
             }
         }
 
@@ -285,15 +347,12 @@
         }
 
         // Logout handler
-        function handleLogout() {
+        window.handleLogout = function () { // Expose to window
             if (confirm('Are you sure you want to logout?')) {
                 API.logout();
                 window.location.href = '/login';
             }
         }
-
-        // Load dashboard on page load
-        loadDashboard();
     </script>
 </body>
 

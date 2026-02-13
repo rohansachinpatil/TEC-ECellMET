@@ -47,7 +47,13 @@
             };
 
             // Save to localStorage
-            localStorage.setItem('tec_team', JSON.stringify(demoTeam));
+            try {
+                localStorage.setItem('tec_team', JSON.stringify(demoTeam));
+            } catch (e) {
+                console.error("Local storage failed", e);
+                alert("Could not save to local storage. Check browser settings.");
+                return;
+            }
 
             // Show result
             document.getElementById('result').style.display = 'block';
