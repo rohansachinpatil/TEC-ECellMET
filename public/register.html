@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register | TEC</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Russo+One&family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <style>
+        .register-container {
+            min-height: calc(100vh - 73px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--spacing-xl) var(--spacing-md);
+            margin-top: 73px;
+        }
+
+        .register-card {
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: var(--white-60);
+            user-select: none;
+        }
+
+        .password-field {
+            position: relative;
+        }
+
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        /* Toggle Switch */
+        .role-toggle {
+            display: flex;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 4px;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .role-btn {
+            flex: 1;
+            padding: 10px;
+            text-align: center;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            color: var(--white-60);
+        }
+
+        .role-btn.active {
+            background: var(--f1-red);
+            color: white;
+            font-weight: 700;
+        }
+
+        .form-section {
+            display: none;
+        }
+
+        .form-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="/" class="navbar-logo">
+                <img src="/assets/teclogo.svg" alt="TEC Logo">
+                <span>TEC</span>
+            </a>
+            <div class="navbar-menu" id="navbarMenu">
+                <a href="/" class="navbar-link">Home</a>
+                <a href="/about" class="navbar-link">About</a>
+                <a href="/leaderboard" class="navbar-link">Leaderboard</a>
+                <a href="/login" class="navbar-link">Login</a>
+                <a href="/register" class="navbar-link btn-primary active" style="padding: 0.5rem 1.5rem;">Register</a>
+            </div>
+            <div class="menu-toggle" id="menuToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Register Section -->
+    <div class="register-container">
+        <div class="register-card glass-card">
+            <h2 class="text-center mb-md">Register for <span class="text-red">TEC</span></h2>
+            <p class="text-muted text-center mb-xl">Join the ultimate entrepreneurship challenge</p>
+
+            <!-- Role Toggle -->
+            <div class="role-toggle">
+                <div class="role-btn active" onclick="switchRole('leader')">Register as Leader</div>
+                <div class="role-btn" onclick="switchRole('member')">Join as Member</div>
+            </div>
+
+            <!-- Leader Form -->
+            <form id="leaderForm" class="form-section active" onsubmit="handleLeaderRegister(event)">
+                <h4 class="mb-md text-red">Team Details</h4>
+                <div class="grid grid-2 gap-md">
+                    <div class="form-group">
+                        <label class="form-label">Team Name</label>
+                        <input type="text" class="form-input" name="teamName" placeholder="E-Cell / Team Name" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Institute Name</label>
+                        <input type="text" class="form-input" name="collegeName" placeholder="Your College Name"
+                            required>
+                    </div>
+                </div>
+
+                <h4 class="mb-md mt-lg text-red">Leader Details</h4>
+                <div class="grid grid-2 gap-md">
+                    <div class="form-group">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" class="form-input" name="name" placeholder="Your Name" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Phone Number</label>
+                        <input type="tel" class="form-input" name="phone" placeholder="10-digit Mobile" required
+                            pattern="[0-9]{10}">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-input" name="email" placeholder="email@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">City</label>
+                        <input type="text" class="form-input" name="city" placeholder="Your City" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Year</label>
+                        <select class="form-input" name="year" required>
+                            <option value="">Select Year</option>
+                            <option value="FE">First Year</option>
+                            <option value="SE">Second Year</option>
+                            <option value="TE">Third Year</option>
+                            <option value="BE">Final Year</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Branch</label>
+                        <input type="text" class="form-input" name="branch" placeholder="e.g. CS, IT, EnTC" required>
+                    </div>
+                </div>
+
+                <h4 class="mb-md mt-lg text-red">Social Links (Optional)</h4>
+                <div class="grid grid-2 gap-md">
+                    <div class="form-group">
+                        <label class="form-label">Instagram Link</label>
+                        <input type="url" class="form-input" name="instagram" placeholder="https://instagram.com/...">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">LinkedIn Link</label>
+                        <input type="url" class="form-input" name="linkedin" placeholder="https://linkedin.com/in/...">
+                    </div>
+                </div>
+
+                <div class="form-group mt-md">
+                    <label class="form-label">Password</label>
+                    <div class="password-field">
+                        <input type="password" class="form-input" name="password" placeholder="Min 6 characters"
+                            required minlength="6">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-full btn-lg mt-lg">Register Team</button>
+            </form>
+
+            <!-- Member Form -->
+            <form id="memberForm" class="form-section" onsubmit="handleMemberRegister(event)">
+                <h4 class="mb-md text-red">Join Existing Team</h4>
+                <div class="form-group">
+                    <label class="form-label">Team Code</label>
+                    <input type="text" class="form-input" name="teamCode" placeholder="Enter 5-digit Team Code" required
+                        maxlength="5">
+                    <small class="text-muted">Ask your Team Leader for the code.</small>
+                </div>
+
+                <h4 class="mb-md mt-lg text-red">Your Details</h4>
+                <div class="grid grid-2 gap-md">
+                    <div class="form-group">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" class="form-input" name="name" placeholder="Your Name" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Phone Number</label>
+                        <input type="tel" class="form-input" name="phone" placeholder="10-digit Mobile" required
+                            pattern="[0-9]{10}">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-input" name="email" placeholder="email@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Year</label>
+                        <select class="form-input" name="year" required>
+                            <option value="">Select Year</option>
+                            <option value="FE">First Year</option>
+                            <option value="SE">Second Year</option>
+                            <option value="TE">Third Year</option>
+                            <option value="BE">Final Year</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="grid-column: span 2;">
+                        <label class="form-label">Branch</label>
+                        <input type="text" class="form-input" name="branch" placeholder="e.g. CS, IT, EnTC" required>
+                    </div>
+                </div>
+
+                <div class="form-group mt-md">
+                    <label class="form-label">Password</label>
+                    <div class="password-field">
+                        <input type="password" class="form-input" name="password" placeholder="Min 6 characters"
+                            required minlength="6">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-full btn-lg mt-lg">Join Team</button>
+            </form>
+
+            <p class="text-center text-muted mt-md">
+                Already have an account? <a href="/login" class="text-red">Login here</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/js/api.js"></script>
+    <script src="/js/navigation.js"></script>
+    <script src="/js/main.js"></script>
+    <script>
+        function switchRole(role) {
+            const btns = document.querySelectorAll('.role-btn');
+            const forms = document.querySelectorAll('.form-section');
+
+            btns.forEach(btn => btn.classList.remove('active'));
+            forms.forEach(form => form.classList.remove('active'));
+
+            if (role === 'leader') {
+                btns[0].classList.add('active');
+                document.getElementById('leaderForm').classList.add('active');
+            } else {
+                btns[1].classList.add('active');
+                document.getElementById('memberForm').classList.add('active');
+            }
+        }
+
+        async function handleLeaderRegister(e) {
+            e.preventDefault();
+            const form = e.target;
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+
+            const btn = form.querySelector('button');
+            const originalText = btn.textContent;
+            btn.textContent = 'Registering...';
+            btn.disabled = true;
+
+            const result = await API.registerLeader(data);
+
+            if (result.success) {
+                alert(`✅ Registration Successful!\nYour Team Code is: ${result.teamCode}\nShare this code with your members.`);
+                window.location.href = '/dashboard';
+            } else {
+                alert('❌ Error: ' + result.message);
+                btn.textContent = originalText;
+                btn.disabled = false;
+            }
+        }
+
+        async function handleMemberRegister(e) {
+            e.preventDefault();
+            const form = e.target;
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+
+            const btn = form.querySelector('button');
+            const originalText = btn.textContent;
+            btn.textContent = 'Joining...';
+            btn.disabled = true;
+
+            const result = await API.registerMember(data);
+
+            if (result.success) {
+                alert('✅ Joined Team Successfully!');
+                window.location.href = '/dashboard';
+            } else {
+                alert('❌ Error: ' + result.message);
+                btn.textContent = originalText;
+                btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+
+</html>

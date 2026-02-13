@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo Setup | TEC</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+    <div style="min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem;">
+        <div class="card" style="max-width: 500px; text-align: center;">
+            <h2 class="mb-lg">🔧 Demo Account <span class="text-red">Setup</span></h2>
+            <p class="text-muted mb-xl">Click the button below to create a demo account in localStorage</p>
+
+            <button onclick="setupDemo()" class="btn btn-primary btn-lg mb-xl">Setup Demo Account</button>
+
+            <div id="result" style="display: none;" class="glass-card">
+                <h3 class="text-red mb-md">✅ Demo Account Created!</h3>
+                <p class="text-muted mb-sm"><strong>Email:</strong> demo@tec.com</p>
+                <p class="text-muted mb-lg"><strong>Password:</strong> 123456</p>
+                <a href="/login" class="btn btn-primary">Go to Login</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function setupDemo() {
+            // Create demo team account
+            const demoTeam = {
+                teamName: "Tech Warriors",
+                leaderName: "Rohan Patil",
+                college: "MIT College of Engineering",
+                email: "demo@tec.com",
+                password: "123456",
+                registeredOn: new Date().toISOString(),
+                rank: 12,
+                points: 450,
+                members: [
+                    {
+                        name: "Rohan Patil",
+                        role: "Team Leader",
+                        email: "demo@tec.com"
+                    }
+                ]
+            };
+
+            // Save to localStorage
+            localStorage.setItem('tec_team', JSON.stringify(demoTeam));
+
+            // Show result
+            document.getElementById('result').style.display = 'block';
+
+            alert('✅ Demo account created!\n\nEmail: demo@tec.com\nPassword: 123456\n\nClick OK to go to login page');
+        }
+    </script>
+</body>
+
+</html>

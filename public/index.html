@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TEC - Take an Entrepreneurship Challenge | E-Cell</title>
+    <meta name="description" content="Tech & Entrepreneurship Challenge: A 3-Month Saga of Innovation">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Russo+One&family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <style>
+        /* Hero Section Specific Styles */
+        #hero {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: var(--deep-black);
+        }
+
+        .hero-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #000000 0%, #1a0000 100%);
+            z-index: 0;
+        }
+
+        .hero-background::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image:
+                linear-gradient(rgba(255, 24, 1, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 24, 1, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% {
+                transform: translateY(0);
+            }
+
+            100% {
+                transform: translateY(50px);
+            }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 0 var(--spacing-md);
+            animation: fadeInUp 1s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-logo {
+            height: 120px;
+            margin-bottom: var(--spacing-lg);
+            filter: drop-shadow(0 0 20px rgba(255, 24, 1, 0.5));
+        }
+
+        .hero-tagline {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(1rem, 2vw, 1.5rem);
+            letter-spacing: 0.2em;
+            color: var(--white-80);
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--f1-red);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 0 auto var(--spacing-md);
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 50px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--f1-red);
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-bottom: var(--spacing-xl);
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: -38px;
+            top: 0;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--f1-red);
+            box-shadow: 0 0 20px rgba(255, 24, 1, 0.6);
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--f1-red);
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, rgba(255, 24, 1, 0.1) 0%, rgba(0, 0, 0, 0.3) 100%);
+            padding: var(--spacing-2xl) 0;
+            border-top: 1px solid var(--white-10);
+            border-bottom: 1px solid var(--white-10);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="/" class="navbar-logo">
+                <img src="/assets/teclogo.svg" alt="TEC Logo">
+                <span>TEC</span>
+            </a>
+            <div class="navbar-menu" id="navbarMenu">
+                <a href="/" class="navbar-link active">Home</a>
+                <a href="/about" class="navbar-link">About</a>
+                <a href="/leaderboard" class="navbar-link">Leaderboard</a>
+                <a href="/login" class="navbar-link">Login</a>
+                <a href="/register" class="navbar-link btn-primary" style="padding: 0.5rem 1.5rem;">Register</a>
+            </div>
+            <div class="menu-toggle" id="menuToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section with Scroll-based Image Sequence -->
+    <section id="hero-section" style="height: 300vh; position: relative;">
+        <!-- Canvas for Image Sequence -->
+        <div style="position: sticky; top: 0; height: 100vh; width: 100%; overflow: hidden;">
+            <canvas id="hero-canvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
+
+            <!-- Loading Indicator -->
+            <div id="hero-loading"
+                style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; z-index: 5; transition: opacity 0.5s ease;">
+                <div
+                    style="width: 60px; height: 60px; border: 4px solid rgba(255, 24, 1, 0.2); border-top-color: var(--f1-red); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 1rem;">
+                </div>
+                <p style="color: var(--white-80); font-family: 'Orbitron', sans-serif;">Loading TEC Experience...</p>
+            </div>
+
+            <!-- Hero Content Stage 1 -->
+            <div id="hero-content-1"
+                style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; z-index: 10; width: 90%; max-width: 800px; transition: all 0.6s ease; opacity: 0;">
+                <img src="/assets/teclogo.svg" alt="TEC Logo"
+                    style="height: 120px; margin-bottom: 2rem; filter: drop-shadow(0 0 30px rgba(255, 24, 1, 0.6));">
+                <p
+                    style="font-family: 'Orbitron', sans-serif; font-size: clamp(1rem, 2vw, 1.5rem); letter-spacing: 0.2em; color: var(--white-80); margin-bottom: 2rem; text-shadow: 0 0 20px rgba(255, 24, 1, 0.3);">
+                    TAKE AN ENTREPRENEURSHIP CHALLENGE
+                </p>
+                <a href="/register" class="btn btn-primary btn-lg"
+                    style="box-shadow: 0 0 30px rgba(255, 24, 1, 0.4);">Start Your Engine</a>
+            </div>
+
+            <!-- Hero Content Stage 2 -->
+            <div id="hero-content-2"
+                style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; z-index: 10; width: 90%; max-width: 800px; transition: all 0.6s ease; opacity: 0; pointer-events: none;">
+                <h1
+                    style="font-family: 'Orbitron', sans-serif; font-size: clamp(2rem, 5vw, 4rem); font-weight: 900; margin-bottom: 1.5rem; text-shadow: 0 0 30px rgba(255, 24, 1, 0.5);">
+                    3-Month <span style="color: var(--f1-red);">Innovation</span> Saga
+                </h1>
+                <p style="font-size: clamp(1rem, 2vw, 1.5rem); color: var(--white-80); margin-bottom: 2rem;">
+                    Transform Your Ideas into Reality
+                </p>
+                <div style="display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap;">
+                    <div>
+                        <div
+                            style="font-size: 3rem; font-weight: bold; color: var(--f1-red); font-family: 'Orbitron', sans-serif;">
+                            6</div>
+                        <p style="color: var(--white-60);">Phases</p>
+                    </div>
+                    <div>
+                        <div
+                            style="font-size: 3rem; font-weight: bold; color: var(--f1-red); font-family: 'Orbitron', sans-serif;">
+                            3</div>
+                        <p style="color: var(--white-60);">Months</p>
+                    </div>
+                    <div>
+                        <div
+                            style="font-size: 3rem; font-weight: bold; color: var(--f1-red); font-family: 'Orbitron', sans-serif;">
+                            ∞</div>
+                        <p style="color: var(--white-60);">Possibilities</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hero Content Stage 3 -->
+            <div id="hero-content-3"
+                style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; z-index: 10; width: 90%; max-width: 800px; transition: all 0.6s ease; opacity: 0; pointer-events: none;">
+                <h2
+                    style="font-family: 'Orbitron', sans-serif; font-size: clamp(1.5rem, 4vw, 3rem); font-weight: 900; margin-bottom: 1.5rem;">
+                    Join <span style="color: var(--f1-red);">Hundreds</span> of Innovators
+                </h2>
+                <p
+                    style="font-size: clamp(1rem, 2vw, 1.25rem); color: var(--white-80); margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">
+                    Compete with talented teams from colleges across the region in this prestigious entrepreneurship
+                    challenge
+                </p>
+                <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+                    <a href="/register" class="btn btn-primary btn-lg">Register Now</a>
+                    <a href="/about" class="btn btn-secondary btn-lg">Learn More</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <style>
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+
+    <!-- About TEC Section -->
+    <section class="section" id="about-tec">
+        <div class="container">
+            <div class="grid grid-2 gap-lg">
+                <div class="fade-in">
+                    <h2>About <span class="text-red">TEC</span></h2>
+                    <p class="text-muted">
+                        The Technical Excellence Challenge (TEC) is a premier college-level competition platform
+                        designed to foster innovation, entrepreneurship, and technical excellence among students across
+                        multiple institutions.
+                    </p>
+                    <p class="text-muted">
+                        This 3-month intensive program challenges teams to transform their innovative ideas into viable
+                        solutions through structured phases, mentorship, and real-world problem-solving.
+                    </p>
+                    <div style="display: flex; gap: 2rem; margin-top: 2rem;">
+                        <div>
+                            <div class="stat-number">6</div>
+                            <p class="text-muted">Phases</p>
+                        </div>
+                        <div>
+                            <div class="stat-number">3</div>
+                            <p class="text-muted">Months</p>
+                        </div>
+                        <div>
+                            <div class="stat-number">∞</div>
+                            <p class="text-muted">Possibilities</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid gap-md">
+                    <div class="card fade-in">
+                        <div class="feature-icon">🎓</div>
+                        <h4>Multi-College Participation</h4>
+                        <p class="text-muted">Compete with talented teams from colleges across the region.</p>
+                    </div>
+                    <div class="card fade-in">
+                        <div class="feature-icon">📊</div>
+                        <h4>Structured Phases</h4>
+                        <p class="text-muted">Progress through well-defined rounds with clear objectives and tasks.</p>
+                    </div>
+                    <div class="card fade-in">
+                        <div class="feature-icon">🏆</div>
+                        <h4>Transparent Leaderboard</h4>
+                        <p class="text-muted">Track your progress and ranking in real-time throughout the competition.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="section" style="background: var(--dark-gray);">
+        <div class="container">
+            <h2 class="text-center mb-xl">How It <span class="text-red">Works</span></h2>
+            <div class="grid grid-4 gap-lg">
+                <div class="text-center fade-in">
+                    <div class="step-number">1</div>
+                    <h4>Register Team</h4>
+                    <p class="text-muted">Create your team account and complete registration.</p>
+                </div>
+                <div class="text-center fade-in">
+                    <div class="step-number">2</div>
+                    <h4>Add Members</h4>
+                    <p class="text-muted">Invite your team members (up to 5 members).</p>
+                </div>
+                <div class="text-center fade-in">
+                    <div class="step-number">3</div>
+                    <h4>Complete Tasks</h4>
+                    <p class="text-muted">Work on assigned tasks for each competition phase.</p>
+                </div>
+                <div class="text-center fade-in">
+                    <div class="step-number">4</div>
+                    <h4>Submit Reports</h4>
+                    <p class="text-muted">Submit your solutions and documentation on time.</p>
+                </div>
+                <div class="text-center fade-in" style="grid-column: span 2;">
+                    <div class="step-number">5</div>
+                    <h4>Get Ranked</h4>
+                    <p class="text-muted">Earn points and climb the leaderboard to win!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Competition Phases Section -->
+    <section class="section" id="phases">
+        <div class="container">
+            <h2 class="text-center mb-xl">Competition <span class="text-red">Phases</span></h2>
+            <div class="grid grid-2 gap-lg">
+                <div class="card fade-in">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                        <h3 class="mb-0">Phase 1: Registration</h3>
+                        <span class="badge badge-success">Active</span>
+                    </div>
+                    <p class="text-muted">Team formation and registration period. Submit team details and member
+                        information to participate in the challenge.</p>
+                    <p class="text-muted mt-md"><strong>Duration:</strong> 2 Weeks</p>
+                </div>
+                <div class="card fade-in">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                        <h3 class="mb-0">Phase 2: Task Round 1</h3>
+                        <span class="badge badge-warning">Upcoming</span>
+                    </div>
+                    <p class="text-muted">Initial assessment round focusing on ideation, market research, and problem
+                        identification.</p>
+                    <p class="text-muted mt-md"><strong>Duration:</strong> 3 Weeks</p>
+                </div>
+                <div class="card fade-in">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                        <h3 class="mb-0">Phase 3: Task Round 2</h3>
+                        <span class="badge badge-info">Upcoming</span>
+                    </div>
+                    <p class="text-muted">Advanced round involving solution development, prototyping, and technical
+                        implementation.</p>
+                    <p class="text-muted mt-md"><strong>Duration:</strong> 4 Weeks</p>
+                </div>
+                <div class="card fade-in">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                        <h3 class="mb-0">Phase 4: Final Round</h3>
+                        <span class="badge badge-info">Upcoming</span>
+                    </div>
+                    <p class="text-muted">Final presentation, pitch deck, and evaluation by industry experts and
+                        investors.</p>
+                    <p class="text-muted mt-md"><strong>Duration:</strong> 1 Week</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Important Dates Timeline -->
+    <section class="section" style="background: var(--dark-gray);">
+        <div class="container">
+            <h2 class="text-center mb-xl">Important <span class="text-red">Dates</span></h2>
+            <div style="max-width: 700px; margin: 0 auto;">
+                <div class="timeline">
+                    <div class="timeline-item fade-in">
+                        <div class="timeline-dot"></div>
+                        <div class="glass-card">
+                            <h4>Registration Opens</h4>
+                            <p class="text-muted mb-sm">January 15, 2026</p>
+                            <p class="text-muted">Team registration period begins. Form your team and register for the
+                                challenge.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item fade-in">
+                        <div class="timeline-dot"></div>
+                        <div class="glass-card">
+                            <h4>Registration Closes</h4>
+                            <p class="text-muted mb-sm">January 30, 2026</p>
+                            <p class="text-muted">Last date for team registration. Ensure all team details are
+                                submitted.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item fade-in">
+                        <div class="timeline-dot"></div>
+                        <div class="glass-card">
+                            <h4>Round 1 Begins</h4>
+                            <p class="text-muted mb-sm">February 1, 2026</p>
+                            <p class="text-muted">First task round commences. Tasks will be released on the dashboard.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="timeline-item fade-in">
+                        <div class="timeline-dot"></div>
+                        <div class="glass-card">
+                            <h4>Grand Finale</h4>
+                            <p class="text-muted mb-sm">April 15, 2026</p>
+                            <p class="text-muted">Final presentations and winner announcement ceremony.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Participate Section -->
+    <section class="section" id="benefits">
+        <div class="container">
+            <h2 class="text-center mb-xl">Why <span class="text-red">Participate?</span></h2>
+            <div class="grid grid-3 gap-lg">
+                <div class="card text-center fade-in">
+                    <div class="feature-icon">🤝</div>
+                    <h4>Networking</h4>
+                    <p class="text-muted">Connect with like-minded entrepreneurs, mentors, and industry professionals.
+                    </p>
+                </div>
+                <div class="card text-center fade-in">
+                    <div class="feature-icon">📚</div>
+                    <h4>Learning</h4>
+                    <p class="text-muted">Gain hands-on experience in entrepreneurship, business development, and
+                        innovation.</p>
+                </div>
+                <div class="card text-center fade-in">
+                    <div class="feature-icon">🌟</div>
+                    <h4>Recognition</h4>
+                    <p class="text-muted">Showcase your talent and get recognized at the college and regional level.</p>
+                </div>
+                <div class="card text-center fade-in">
+                    <div class="feature-icon">💰</div>
+                    <h4>Prizes</h4>
+                    <p class="text-muted">Win exciting cash prizes, certificates, and incubation opportunities.</p>
+                </div>
+                <div class="card text-center fade-in">
+                    <div class="feature-icon">👨‍🏫</div>
+                    <h4>Mentorship</h4>
+                    <p class="text-muted">Get guidance from experienced entrepreneurs and industry experts.</p>
+                </div>
+                <div class="card text-center fade-in">
+                    <div class="feature-icon">⚡</div>
+                    <h4>Experience</h4>
+                    <p class="text-muted">Build your portfolio with real-world project experience and problem-solving
+                        skills.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action Section -->
+    <section class="cta-section">
+        <div class="container text-center">
+            <h2 class="mb-lg">Ready to Take the <span class="text-red">Challenge?</span></h2>
+            <p class="text-muted mb-xl" style="font-size: 1.25rem;">Join hundreds of students in this exciting journey
+                of innovation and entrepreneurship.</p>
+            <a href="/register" class="btn btn-primary btn-lg">Register Your Team Now</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>TEC</h4>
+                    <p class="text-muted">Technical Excellence Challenge - A platform for innovation and
+                        entrepreneurship.</p>
+                    <p class="text-muted mt-md">Organized by E-Cell</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <div class="footer-links">
+                        <a href="/" class="footer-link">Home</a>
+                        <a href="/about" class="footer-link">About</a>
+                        <a href="/leaderboard" class="footer-link">Leaderboard</a>
+                        <a href="/register" class="footer-link">Register</a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <div class="footer-links">
+                        <a href="mailto:tec@ecell.com" class="footer-link">tec@ecell.com</a>
+                        <a href="tel:+919876543210" class="footer-link">+91 98765 43210</a>
+                        <p class="text-muted mt-md">Your College Name<br>City, State - 123456</p>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Follow Us</h4>
+                    <div class="footer-links">
+                        <a href="#" class="footer-link">Instagram</a>
+                        <a href="#" class="footer-link">LinkedIn</a>
+                        <a href="#" class="footer-link">Twitter</a>
+                        <a href="#" class="footer-link">Facebook</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 TEC - Technical Excellence Challenge. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="/js/hero.js"></script>
+    <script src="/js/navigation.js"></script>
+    <script src="/js/main.js"></script>
+</body>
+
+</html>

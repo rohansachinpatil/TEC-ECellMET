@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tasks | TEC</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Russo+One&family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="/" class="navbar-logo">
+                <img src="/assets/teclogo.svg" alt="TEC Logo">
+                <span>TEC</span>
+            </a>
+            <div class="navbar-menu">
+                <a href="/dashboard" class="navbar-link">Dashboard</a>
+                <a href="#" class="navbar-link" onclick="logout()">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <nav class="sidebar-menu">
+            <a href="/dashboard" class="sidebar-link">
+                <span>📊</span>
+                <span>Dashboard</span>
+            </a>
+            <a href="/team" class="sidebar-link">
+                <span>👥</span>
+                <span>My Team</span>
+            </a>
+            <a href="/tasks" class="sidebar-link active">
+                <span>📋</span>
+                <span>Tasks</span>
+            </a>
+            <a href="/submissions" class="sidebar-link">
+                <span>📤</span>
+                <span>Submissions</span>
+            </a>
+            <a href="/leaderboard" class="sidebar-link">
+                <span>🏆</span>
+                <span>Leaderboard</span>
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container-wide">
+            <div class="flex-between mb-xl">
+                <h1 class="mb-0">Competition <span class="text-red">Tasks</span></h1>
+                <select class="form-select" style="max-width: 200px;">
+                    <option value="all">All Phases</option>
+                    <option value="registration">Registration</option>
+                    <option value="round1" selected>Round 1</option>
+                    <option value="round2">Round 2</option>
+                </select>
+            </div>
+
+            <!-- Tasks Grid -->
+            <div class="grid grid-3 gap-lg">
+                <!-- Task 1 -->
+                <div class="card">
+                    <div class="flex-between mb-md">
+                        <span class="badge badge-red">Round 1</span>
+                        <span class="badge badge-warning">In Progress</span>
+                    </div>
+                    <h3 class="mb-md">Market Research Report</h3>
+                    <p class="text-muted mb-lg">Conduct comprehensive market research for your proposed idea. Include
+                        target audience, market size, trends, and opportunities.</p>
+                    <div class="mb-md">
+                        <p class="text-muted mb-sm" style="font-size: 0.9rem;">⏰ Deadline: Feb 15, 2026</p>
+                        <p class="text-muted mb-sm" style="font-size: 0.9rem;">🎯 Max Marks: 100</p>
+                    </div>
+                    <button class="btn btn-primary btn-full" onclick="viewTask('market-research')">View Details</button>
+                </div>
+
+                <!-- Task 2 -->
+                <div class="card">
+                    <div class="flex-between mb-md">
+                        <span class="badge badge-red">Round 1</span>
+                        <span class="badge badge-success">Submitted</span>
+                    </div>
+                    <h3 class="mb-md">Problem Statement</h3>
+                    <p class="text-muted mb-lg">Define the core problem your startup aims to solve. Explain why this
+                        problem is important and who it affects.</p>
+                    <div class="mb-md">
+                        <p class="text-muted mb-sm" style="font-size: 0.9rem;">⏰ Submitted: Feb 10, 2026</p>
+                        <p class="text-muted mb-sm" style="font-size: 0.9rem;">🎯 Max Marks: 100</p>
+                    </div>
+                    <button class="btn btn-secondary btn-full" disabled>Submitted</button>
+                </div>
+
+                <!-- Task 3 -->
+                <div class="card">
+                    <div class="flex-between mb-md">
+                        <span class="badge badge-red">Round 1</span>
+                        <span class="badge badge-error">Not Started</span>
+                    </div>
+                    <h3 class="mb-md">Competitor Analysis</h3>
+                    <p class="text-muted mb-lg">Identify and analyze your top 5 competitors. Compare features, pricing,
+                        strengths, and weaknesses.</p>
+                    <div class="mb-md">
+                        <p class="text-muted mb-sm" style="font-size: 0.9rem;">⏰ Deadline: Feb 18, 2026</p>
+                        <p class="text-muted mb-sm" style="font-size: 0.9rem;">🎯 Max Marks: 100</p>
+                    </div>
+                    <button class="btn btn-primary btn-full" onclick="viewTask('competitor-analysis')">View
+                        Details</button>
+                </div>
+
+                <!-- Task 4 -->
+                <div class="card">
+                    <div class="flex-between mb-md">
+                        <span class="badge badge-red">Round 1</span>
+                        <span class="badge badge-error">Not Started</span>
+                    </div>
+                    <h3 class="mb-md">Business Model Canvas</h3>
+                    <p class="text-muted mb-lg">Create a detailed Business Model Canvas covering all 9 building blocks
+                        for your startup idea.</p>
+                    <div class="mb-md">
+                        <p class="text-muted mb-sm" style="font-size: 0.9rem;">⏰ Deadline: Feb 23, 2026</p>
+                        <p class="text-muted mb-sm" style="font-size: 0.9rem;">🎯 Max Marks: 150</p>
+                    </div>
+                    <button class="btn btn-primary btn-full" onclick="viewTask('business-model')">View Details</button>
+                </div>
+
+                <!-- Task 5 -->
+                <div class="card">
+                    <div class="flex-between mb-md">
+                        <span class="badge badge-red">Round 1</span>
+                        <span class="badge badge-success">Submitted</span>
+                    </div>
+                    <h3 class="mb-md">Idea Pitch Deck</h3>
+                    <p class="text-muted mb-lg">Create a compelling 10-slide pitch deck presenting your startup idea,
+                        problem, solution, and team.</p>
+                    <div class="mb-md">
+                        <p class="text-muted mb-sm" style="font-size: 0.9rem;">⏰ Submitted: Feb 5, 2026</p>
+                        <p class="text-muted mb-sm" style="font-size: 0.9rem;">🎯 Max Marks: 100</p>
+                    </div>
+                    <button class="btn btn-secondary btn-full" disabled>Submitted</button>
+                </div>
+
+                <!-- Task 6 -->
+                <div class="card">
+                    <div class="flex-between mb-md">
+                        <span class="badge badge-red">Round 1</span>
+                        <span class="badge badge-error">Not Started</span>
+                    </div>
+                    <h3 class="mb-md">Team Introduction Video</h3>
+                    <p class="text-muted mb-lg">Record a 2-3 minute video introducing your team members, their roles,
+                        and why you're passionate about this idea.</p>
+                    <div class="mb-md">
+                        <p class="text-muted mb-sm" style="font-size: 0.9rem;">⏰ Deadline: Feb 25, 2026</p>
+                        <p class="text-muted mb-sm" style="font-size: 0.9rem;">🎯 Max Marks: 50</p>
+                    </div>
+                    <button class="btn btn-primary btn-full" onclick="viewTask('team-video')">View Details</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="/js/navigation.js"></script>
+    <script src="/js/api.js"></script>
+    <script>
+        // Check authentication
+        const user = API.getStoredUser();
+        if (!user) {
+            window.location.href = '/login';
+        }
+
+        async function loadTasks() {
+            const container = document.querySelector('.grid');
+            if (!container) return;
+
+            container.innerHTML = '<p class="text-center" style="grid-column: 1/-1;">Loading tasks...</p>';
+
+            try {
+                // Fetch tasks and my submissions in parallel
+                const [tasksResult, submissionsResult] = await Promise.all([
+                    API.getTasks(),
+                    API.getMySubmissions()
+                ]);
+
+                if (!tasksResult.success) {
+                    throw new Error(tasksResult.message);
+                }
+
+                const tasks = tasksResult.tasks || [];
+                const submissions = submissionsResult.success ? submissionsResult.submissions : []; // Optional if fails
+
+                container.innerHTML = '';
+
+                if (tasks.length === 0) {
+                    container.innerHTML = '<div class="text-center" style="grid-column: 1/-1;"><h3>No active tasks available at the moment.</h3></div>';
+                    return;
+                }
+
+                tasks.forEach(task => {
+                    const submission = submissions.find(s => s.taskId === task.id);
+                    const isSubmitted = !!submission;
+                    const isExpired = new Date(task.deadline) < new Date();
+
+                    let statusBadge = '';
+                    let actionButton = '';
+
+                    if (isSubmitted) {
+                        statusBadge = '<span class="badge badge-success">Submitted</span>';
+                        actionButton = `<button class="btn btn-secondary btn-full" disabled>Submitted</button>`;
+                    } else if (isExpired) {
+                        statusBadge = '<span class="badge badge-error">Expired</span>';
+                        actionButton = `<button class="btn btn-secondary btn-full" disabled>Deadline Passed</button>`;
+                    } else {
+                        statusBadge = '<span class="badge badge-warning">Pending</span>';
+                        // viewTask now passes task ID
+                        actionButton = `<button class="btn btn-primary btn-full" onclick="viewTask('${task.id}')">View Details & Submit</button>`;
+                    }
+
+                    const phaseName = task.phase ? task.phase.name : 'General';
+
+                    const card = `
+                        <div class="card">
+                            <div class="flex-between mb-md">
+                                <span class="badge badge-red">${phaseName}</span>
+                                ${statusBadge}
+                            </div>
+                            <h3 class="mb-md">${task.title}</h3>
+                            <p class="text-muted mb-lg">${task.description.substring(0, 100)}${task.description.length > 100 ? '...' : ''}</p>
+                            <div class="mb-md">
+                                <p class="text-muted mb-sm" style="font-size: 0.9rem;">⏰ Deadline: ${new Date(task.deadline).toLocaleDateString()}</p>
+                                <p class="text-muted mb-sm" style="font-size: 0.9rem;">🎯 Max Marks: ${task.maxMarks}</p>
+                            </div>
+                            ${actionButton}
+                        </div>
+                    `;
+                    container.insertAdjacentHTML('beforeend', card);
+                });
+
+            } catch (error) {
+                console.error('Error loading tasks:', error);
+                container.innerHTML = `<div class="text-center text-error" style="grid-column: 1/-1;">Error loading tasks: ${error.message}</div>`;
+            }
+        }
+
+        function viewTask(taskId) {
+            // Check if we have the full task object in memory using a global or re-fetch
+            // For now, redirect to a task details page or show a modal
+            // Let's create a simple modal dynamically or redirect
+            // Ideally, we redirect to /tasks.html?id=... but lets keep it simple with a prompt for now
+            // Or better, let's implement the submission via prompt for this MVP
+
+            // Actually, we need a file upload. A prompt won't work.
+            // Let's redirect to a submission page or create a modal.
+            // Since I don't want to create a new page right now, I'll inject a modal.
+            createSubmissionModal(taskId);
+        }
+
+        function createSubmissionModal(taskId) {
+            // Remove existing modal if any
+            const existing = document.getElementById('submissionModal');
+            if (existing) existing.remove();
+
+            const modalHtml = `
+                <div id="submissionModal" class="modal-overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: flex; justify-content: center; align-items: center; z-index: 1000;">
+                    <div class="modal-content" style="background: var(--bg-card); padding: 2rem; border-radius: 12px; width: 90%; max-width: 500px; border: 1px solid var(--border-color);">
+                        <h2 class="mb-lg">Submit Task</h2>
+                        <p class="mb-lg">Upload your solution PDF.</p>
+                        <form id="submissionForm">
+                            <input type="file" name="file" accept="application/pdf" required class="form-input mb-lg" style="background: var(--bg-dark);">
+                            <div class="flex-between">
+                                <button type="button" class="btn btn-secondary" onclick="document.getElementById('submissionModal').remove()">Cancel</button>
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            `;
+            document.body.insertAdjacentHTML('beforeend', modalHtml);
+
+            document.getElementById('submissionForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const fileInput = e.target.querySelector('input[type="file"]');
+                const file = fileInput.files[0];
+                if (!file) return alert('Please select a file');
+
+                const btn = e.target.querySelector('button[type="submit"]');
+                const originalText = btn.textContent;
+                btn.textContent = 'Uploading...';
+                btn.disabled = true;
+
+                const result = await API.submitTask(taskId, file);
+
+                if (result.success) {
+                    alert('✅ Task Submitted Successfully!');
+                    document.getElementById('submissionModal').remove();
+                    loadTasks(); // Refresh list
+                } else {
+                    alert('❌ Error: ' + result.message);
+                    btn.textContent = originalText;
+                    btn.disabled = false;
+                }
+            });
+        }
+
+        function logout() {
+            API.logout();
+            window.location.href = '/login';
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', loadTasks);
+    </script>
+</body>
+
+</html>

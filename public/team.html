@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Team | TEC</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Russo+One&family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="/" class="navbar-logo">
+                <img src="/assets/teclogo.svg" alt="TEC Logo">
+                <span>TEC</span>
+            </a>
+            <div class="navbar-menu">
+                <a href="/dashboard" class="navbar-link">Dashboard</a>
+                <a href="#" class="navbar-link" onclick="logout()">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <nav class="sidebar-menu">
+            <a href="/dashboard" class="sidebar-link">
+                <span>📊</span>
+                <span>Dashboard</span>
+            </a>
+            <a href="/team" class="sidebar-link active">
+                <span>👥</span>
+                <span>My Team</span>
+            </a>
+            <a href="/tasks" class="sidebar-link">
+                <span>📋</span>
+                <span>Tasks</span>
+            </a>
+            <a href="/submissions" class="sidebar-link">
+                <span>📤</span>
+                <span>Submissions</span>
+            </a>
+            <a href="/leaderboard" class="sidebar-link">
+                <span>🏆</span>
+                <span>Leaderboard</span>
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container-wide">
+            <h1 class="mb-xl">My <span class="text-red">Team</span></h1>
+
+            <!-- Team Info Card -->
+            <div class="card mb-xl">
+                <h3 class="mb-lg">Team <span class="text-red">Information</span></h3>
+                <div class="grid grid-2 gap-lg">
+                    <div>
+                        <p class="text-muted mb-sm">Team Name</p>
+                        <h4 class="text-red mb-0">Code Warriors</h4>
+                    </div>
+                    <div>
+                        <p class="text-muted mb-sm">College</p>
+                        <h4 class="mb-0">MIT College of Engineering</h4>
+                    </div>
+                    <div>
+                        <p class="text-muted mb-sm">Team Leader</p>
+                        <h4 class="mb-0">John Doe</h4>
+                    </div>
+                    <div>
+                        <p class="text-muted mb-sm">Total Members</p>
+                        <h4 class="mb-0">5 / 5</h4>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team Members Grid -->
+            <div class="flex-between mb-lg">
+                <h3>Team <span class="text-red">Members</span></h3>
+                <button class="btn btn-primary" onclick="alert('Add member functionality - Connect to backend')">
+                    + Add Member
+                </button>
+            </div>
+
+            <div class="grid grid-3 gap-lg">
+                <!-- Member 1 - Leader -->
+                <div class="card">
+                    <div class="flex-between mb-md">
+                        <div
+                            style="width: 80px; height: 80px; border-radius: 50%; background: var(--light-gray); display: flex; align-items: center; justify-content: center; font-size: 2.5rem;">
+                            👤</div>
+                        <span class="badge badge-red">Leader</span>
+                    </div>
+                    <h4 class="mb-sm">John Doe</h4>
+                    <p class="text-muted mb-sm">Team Leader</p>
+                    <p class="text-muted mb-lg" style="font-size: 0.9rem;">john.doe@college.edu</p>
+                    <button class="btn btn-secondary btn-full" disabled style="opacity: 0.5;">Cannot Remove</button>
+                </div>
+
+                <!-- Member 2 -->
+                <div class="card">
+                    <div class="flex-between mb-md">
+                        <div
+                            style="width: 80px; height: 80px; border-radius: 50%; background: var(--light-gray); display: flex; align-items: center; justify-content: center; font-size: 2.5rem;">
+                            👤</div>
+                        <span class="badge badge-info">Member</span>
+                    </div>
+                    <h4 class="mb-sm">Jane Smith</h4>
+                    <p class="text-muted mb-sm">Developer</p>
+                    <p class="text-muted mb-lg" style="font-size: 0.9rem;">jane.smith@college.edu</p>
+                    <button class="btn btn-secondary btn-full" onclick="removeMember('Jane Smith')">Remove</button>
+                </div>
+
+                <!-- Member 3 -->
+                <div class="card">
+                    <div class="flex-between mb-md">
+                        <div
+                            style="width: 80px; height: 80px; border-radius: 50%; background: var(--light-gray); display: flex; align-items: center; justify-content: center; font-size: 2.5rem;">
+                            👤</div>
+                        <span class="badge badge-info">Member</span>
+                    </div>
+                    <h4 class="mb-sm">Mike Johnson</h4>
+                    <p class="text-muted mb-sm">Designer</p>
+                    <p class="text-muted mb-lg" style="font-size: 0.9rem;">mike.j@college.edu</p>
+                    <button class="btn btn-secondary btn-full" onclick="removeMember('Mike Johnson')">Remove</button>
+                </div>
+
+                <!-- Member 4 -->
+                <div class="card">
+                    <div class="flex-between mb-md">
+                        <div
+                            style="width: 80px; height: 80px; border-radius: 50%; background: var(--light-gray); display: flex; align-items: center; justify-content: center; font-size: 2.5rem;">
+                            👤</div>
+                        <span class="badge badge-info">Member</span>
+                    </div>
+                    <h4 class="mb-sm">Sarah Williams</h4>
+                    <p class="text-muted mb-sm">Marketing</p>
+                    <p class="text-muted mb-lg" style="font-size: 0.9rem;">sarah.w@college.edu</p>
+                    <button class="btn btn-secondary btn-full" onclick="removeMember('Sarah Williams')">Remove</button>
+                </div>
+
+                <!-- Member 5 -->
+                <div class="card">
+                    <div class="flex-between mb-md">
+                        <div
+                            style="width: 80px; height: 80px; border-radius: 50%; background: var(--light-gray); display: flex; align-items: center; justify-content: center; font-size: 2.5rem;">
+                            👤</div>
+                        <span class="badge badge-info">Member</span>
+                    </div>
+                    <h4 class="mb-sm">Alex Brown</h4>
+                    <p class="text-muted mb-sm">Business Analyst</p>
+                    <p class="text-muted mb-lg" style="font-size: 0.9rem;">alex.brown@college.edu</p>
+                    <button class="btn btn-secondary btn-full" onclick="removeMember('Alex Brown')">Remove</button>
+                </div>
+            </div>
+
+            <!-- Team Guidelines -->
+            <div class="glass-card mt-xl">
+                <h4 class="text-red mb-md">📝 Team Guidelines</h4>
+                <ul style="list-style: none; padding-left: 0;">
+                    <li class="mb-sm">• Maximum 5 members per team (including team leader)</li>
+                    <li class="mb-sm">• Team member changes allowed only during registration phase</li>
+                    <li class="mb-sm">• All members must be from the same or different colleges</li>
+                    <li class="mb-sm">• Team leader is responsible for all submissions and communication</li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="/js/api.js"></script>
+    <script src="/js/navigation.js"></script>
+    <script>
+        // Protect page
+        if (!API.isLoggedIn()) {
+            window.location.href = '/login';
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                API.logout();
+                window.location.href = '/login';
+            }
+        }
+
+        function removeMember(name) {
+            if (confirm(`Are you sure you want to remove ${name} from the team?`)) {
+                // TODO: Call API to remove member
+                alert('Remove member functionality - Connect to backend');
+            }
+        }
+    </script>
+</body>
+
+</html>

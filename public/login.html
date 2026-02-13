@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | TEC</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Russo+One&family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <style>
+        .login-container {
+            min-height: calc(100vh - 73px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--spacing-xl) var(--spacing-md);
+            margin-top: 73px;
+        }
+
+        .login-card {
+            max-width: 450px;
+            width: 100%;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: var(--white-60);
+            user-select: none;
+        }
+
+        .password-field {
+            position: relative;
+        }
+
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="/" class="navbar-logo">
+                <img src="/assets/teclogo.svg" alt="TEC Logo">
+                <span>TEC</span>
+            </a>
+            <div class="navbar-menu" id="navbarMenu">
+                <a href="/" class="navbar-link">Home</a>
+                <a href="/about" class="navbar-link">About</a>
+                <a href="/leaderboard" class="navbar-link">Leaderboard</a>
+                <a href="/login" class="navbar-link active">Login</a>
+                <a href="/register" class="navbar-link btn-primary" style="padding: 0.5rem 1.5rem;">Register</a>
+            </div>
+            <div class="menu-toggle" id="menuToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Login Section -->
+    <div class="login-container">
+        <div class="login-card glass-card">
+            <h2 class="text-center mb-md">Login to <span class="text-red">TEC</span></h2>
+            <p class="text-muted text-center mb-xl">Access your team dashboard</p>
+
+            <form id="loginForm">
+                <div class="form-group">
+                    <label class="form-label">Phone Number</label>
+                    <input type="tel" class="form-input" id="phone" placeholder="Enter 10-digit Mobile Number" required
+                        pattern="[0-9]{10}" autofocus>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <div class="password-field">
+                        <input type="password" class="form-input" id="password" placeholder="Enter your password"
+                            required>
+                        <span class="password-toggle" onclick="togglePassword('password')">👁️</span>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-full btn-lg mt-lg" id="submitBtn">Login</button>
+
+                <p class="text-center text-muted mt-md">
+                    Don't have an account? <a href="/register" class="text-red">Register here</a>
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/js/api.js"></script>
+    <script src="/js/navigation.js"></script>
+    <script src="/js/main.js"></script>
+    <script>
+        function togglePassword(fieldId) {
+            const field = document.getElementById(fieldId);
+            field.type = field.type === 'password' ? 'text' : 'password';
+        }
+
+        // Redirect if already logged in
+        if (API.isLoggedIn()) {
+            window.location.href = '/dashboard';
+        }
+
+        document.getElementById('loginForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const phone = document.getElementById('phone').value;
+            const password = document.getElementById('password').value;
+
+            // Show loading state
+            const submitBtn = document.getElementById('submitBtn');
+            const form = document.getElementById('loginForm');
+            submitBtn.textContent = 'Logging in...';
+            form.classList.add('loading');
+
+            // Call API
+            const result = await API.login(phone, password);
+
+            // Remove loading state
+            submitBtn.textContent = 'Login';
+            form.classList.remove('loading');
+
+            if (result.success) {
+                // Redirect to dashboard
+                setTimeout(() => {
+                    window.location.href = '/dashboard';
+                }, 500);
+            } else {
+                alert('❌ Login failed: ' + result.message);
+
+                // Clear password field
+                document.getElementById('password').value = '';
+                document.getElementById('password').focus();
+            }
+        });
+    </script>
+</body>
+
+</html>

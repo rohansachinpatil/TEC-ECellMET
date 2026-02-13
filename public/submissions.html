@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submissions | TEC</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Russo+One&family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="/" class="navbar-logo">
+                <img src="/assets/teclogo.svg" alt="TEC Logo">
+                <span>TEC</span>
+            </a>
+            <div class="navbar-menu">
+                <a href="/dashboard" class="navbar-link">Dashboard</a>
+                <a href="#" class="navbar-link" onclick="logout()">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <nav class="sidebar-menu">
+            <a href="/dashboard" class="sidebar-link">
+                <span>📊</span>
+                <span>Dashboard</span>
+            </a>
+            <a href="/team" class="sidebar-link">
+                <span>👥</span>
+                <span>My Team</span>
+            </a>
+            <a href="/tasks" class="sidebar-link">
+                <span>📋</span>
+                <span>Tasks</span>
+            </a>
+            <a href="/submissions" class="sidebar-link active">
+                <span>📤</span>
+                <span>Submissions</span>
+            </a>
+            <a href="/leaderboard" class="sidebar-link">
+                <span>🏆</span>
+                <span>Leaderboard</span>
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container-wide">
+            <h1 class="mb-xl">My <span class="text-red">Submissions</span></h1>
+
+            <!-- Submissions Table -->
+            <div class="card">
+                <div class="table-container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Task Name</th>
+                                <th>Phase</th>
+                                <th>Submission Date</th>
+                                <th>Status</th>
+                                <th>Marks</th>
+                                <th>Remarks</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Team Formation Document</strong></td>
+                                <td>Registration</td>
+                                <td>Feb 1, 2026</td>
+                                <td><span class="badge badge-success">Graded</span></td>
+                                <td><strong class="text-red">95/100</strong></td>
+                                <td>Excellent team composition and roles defined clearly</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Idea Pitch Deck</strong></td>
+                                <td>Round 1</td>
+                                <td>Feb 5, 2026</td>
+                                <td><span class="badge badge-success">Graded</span></td>
+                                <td><strong class="text-red">88/100</strong></td>
+                                <td>Good presentation, improve market analysis section</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Problem Statement</strong></td>
+                                <td>Round 1</td>
+                                <td>Feb 10, 2026</td>
+                                <td><span class="badge badge-warning">Pending</span></td>
+                                <td><strong class="text-muted">-</strong></td>
+                                <td>Under evaluation</td>
+                            </tr>
+                            <tr>
+                                <td><strong>College ID Verification</strong></td>
+                                <td>Registration</td>
+                                <td>Jan 30, 2026</td>
+                                <td><span class="badge badge-success">Graded</span></td>
+                                <td><strong class="text-red">100/100</strong></td>
+                                <td>Verified successfully</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Team Introduction Form</strong></td>
+                                <td>Registration</td>
+                                <td>Jan 28, 2026</td>
+                                <td><span class="badge badge-success">Graded</span></td>
+                                <td><strong class="text-red">92/100</strong></td>
+                                <td>Well written introduction</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Innovation Proposal</strong></td>
+                                <td>Round 1</td>
+                                <td>Feb 3, 2026</td>
+                                <td><span class="badge badge-success">Graded</span></td>
+                                <td><strong class="text-red">85/100</strong></td>
+                                <td>Innovative idea, needs more technical depth</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Target Audience Survey</strong></td>
+                                <td>Round 1</td>
+                                <td>Feb 7, 2026</td>
+                                <td><span class="badge badge-success">Graded</span></td>
+                                <td><strong class="text-red">90/100</strong></td>
+                                <td>Good sample size and analysis</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Stats Summary -->
+            <div class="grid grid-4 gap-lg mt-xl">
+                <div class="card text-center">
+                    <p class="text-muted mb-sm">Total Submissions</p>
+                    <h3 class="text-red mb-0">7</h3>
+                </div>
+                <div class="card text-center">
+                    <p class="text-muted mb-sm">Graded</p>
+                    <h3 class="text-red mb-0">6</h3>
+                </div>
+                <div class="card text-center">
+                    <p class="text-muted mb-sm">Pending Review</p>
+                    <h3 class="text-red mb-0">1</h3>
+                </div>
+                <div class="card text-center">
+                    <p class="text-muted mb-sm">Average Score</p>
+                    <h3 class="text-red mb-0">91.7%</h3>
+                </div>
+            </div>
+
+            <!-- Important Notes -->
+            <div class="glass-card mt-xl">
+                <h4 class="text-red mb-md">📌 Important Notes</h4>
+                <ul style="list-style: none; padding-left: 0;">
+                    <li class="mb-sm">• All submissions are final and cannot be edited once submitted</li>
+                    <li class="mb-sm">• Grading typically takes 3-5 business days after submission</li>
+                    <li class="mb-sm">• You can appeal grades within 48 hours of result announcement</li>
+                    <li class="mb-sm">• Make sure to submit before the deadline - late submissions won't be accepted
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="/js/navigation.js"></script>
+    <script>
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                window.location.href = '/login';
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | TEC</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Russo+One&family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="/" class="navbar-logo">
+                <img src="/assets/teclogo.svg" alt="TEC Logo">
+                <span>TEC</span>
+            </a>
+            <div class="navbar-menu">
+                <a href="/dashboard" class="navbar-link active">Dashboard</a>
+                <a href="/leaderboard" class="navbar-link">Leaderboard</a>
+                <a href="#" class="navbar-link" onclick="handleLogout()">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <nav class="sidebar-menu">
+            <a href="/dashboard" class="sidebar-link active">
+                <span>📊</span>
+                <span>Dashboard</span>
+            </a>
+            <a href="/team" class="sidebar-link">
+                <span>👥</span>
+                <span>My Team</span>
+            </a>
+            <!-- Admin Only Link -->
+            <a href="/admin" class="sidebar-link admin-only" style="display: none;">
+                <span>⚡</span>
+                <span>Admin Panel</span>
+            </a>
+            <a href="/tasks" class="sidebar-link">
+                <span>📝</span>
+                <span>Tasks</span>
+            </a>
+            <a href="/leaderboard" class="sidebar-link">
+                <span>🏆</span>
+                <span>Leaderboard</span>
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container-wide">
+            <div class="flex-between mb-xl">
+                <h1 class="mb-0">Team <span class="text-red">Dashboard</span></h1>
+                <div class="glass-card" style="padding: 0.5rem 1rem; border: 1px solid var(--f1-red);"
+                    id="teamCodeContainer">
+                    <span class="text-muted">Team Code:</span>
+                    <strong class="text-white ml-sm" id="teamCodeDisplay">LOADING</strong>
+                </div>
+            </div>
+
+            <!-- Statistics Cards -->
+            <div class="grid grid-4 gap-lg mb-xl" id="statsCards">
+                <div class="card text-center">
+                    <p class="text-muted mb-sm">Team Name</p>
+                    <h3 class="text-red mb-0" id="teamNameStat">Loading...</h3>
+                </div>
+                <div class="card text-center">
+                    <p class="text-muted mb-sm">Current Rank</p>
+                    <h3 class="text-red mb-0" id="rankStat">#--</h3>
+                </div>
+                <div class="card text-center">
+                    <p class="text-muted mb-sm">Total Points</p>
+                    <h3 class="text-red mb-0" id="pointsStat">--</h3>
+                </div>
+                <div class="card text-center">
+                    <p class="text-muted mb-sm">College</p>
+                    <h3 class="text-red mb-0" style="font-size: 1.1rem;" id="collegeStat">Loading...</h3>
+                </div>
+            </div>
+
+            <!-- Active Tasks Section -->
+            <div class="card">
+                <h3 class="mb-lg">Active <span class="text-red">Tasks</span></h3>
+                <div id="tasksContainer" class="grid grid-3 gap-lg">
+                    <!-- Tasks will be rendered here by JavaScript -->
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 2rem;">
+                        <p class="text-muted">Loading tasks...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="/js/api.js"></script>
+    <script src="/js/navigation.js"></script>
+    <script src="/js/main.js"></script>
+    <script>
+        // Protect page - redirect to login if not authenticated
+        if (!API.isLoggedIn()) {
+            window.location.href = '/login';
+        }
+
+        // Load dashboard data
+        async function loadDashboard() {
+            try {
+                // Get stored user and team data
+                const user = API.getStoredUser();
+                const team = API.getStoredTeam();
+
+                // Show Admin Link if applicable
+                if (user && (user.role === 'admin' || user.role === 'super_admin')) {
+                    document.querySelector('.admin-only').style.display = 'flex';
+                }
+
+                if (team) {
+                    // Update stats cards
+                    document.getElementById('teamNameStat').textContent = team.teamName;
+                    document.getElementById('rankStat').textContent = '#' + (team.rank || '12');
+                    document.getElementById('pointsStat').textContent = team.totalPoints || '0';
+                    document.getElementById('collegeStat').textContent = team.collegeName;
+
+                    // Show Team Code only for Leader
+                    if (user.role === 'leader') {
+                        document.getElementById('teamCodeDisplay').textContent = team.teamCode || 'N/A';
+                    } else {
+                        document.getElementById('teamCodeContainer').style.display = 'none';
+                    }
+                }
+
+                // Fetch tasks from backend
+                await loadTasks();
+
+            } catch (error) {
+                console.error('Dashboard load error:', error);
+                // alert('Error loading dashboard. Please try logging in again.');
+                // window.location.href = '/login';
+            }
+        }
+
+        // Load tasks from backend
+        async function loadTasks() {
+            const tasksContainer = document.getElementById('tasksContainer');
+            tasksContainer.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; padding: 2rem;"><p class="text-muted">Loading tasks...</p></div>';
+
+            const result = await API.getTasks();
+
+            if (!result.success) {
+                tasksContainer.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; padding: 2rem;"><p class="text-muted text-red">Error loading tasks: ' + result.message + '</p></div>';
+                return;
+            }
+
+            const tasks = result.tasks || [];
+
+            if (tasks.length === 0) {
+                tasksContainer.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; padding: 2rem;"><p class="text-muted">No active tasks available</p></div>';
+                return;
+            }
+
+            // Get submissions to check status
+            const submissionsResult = await API.getMySubmissions();
+            const submissions = submissionsResult.success ? submissionsResult.submissions : [];
+            const submittedTaskIds = submissions.map(sub => sub.task.id);
+
+            // Clear container
+            tasksContainer.innerHTML = '';
+
+            // Render each task
+            tasks.forEach(task => {
+                const isSubmitted = submittedTaskIds.includes(task.id);
+                const isExpired = task.isExpired || new Date() > new Date(task.deadline);
+
+                tasksContainer.innerHTML += renderTaskCard(task, isSubmitted, isExpired);
+            });
+        }
+
+        // Render task card
+        function renderTaskCard(task, isSubmitted, isExpired) {
+            const deadline = new Date(task.deadline);
+            const timeRemaining = getTimeRemaining(deadline);
+
+            let statusBadge = '';
+            let submitButton = '';
+
+            if (isSubmitted) {
+                statusBadge = '<span class="badge badge-success">Submitted</span>';
+                submitButton = `<div style="margin-top: 1rem; padding: 1rem; background: rgba(0, 255, 0, 0.1); border-radius: 8px;"><p class="text-muted mb-0">✅ Task submitted successfully</p></div>`;
+            } else if (isExpired) {
+                statusBadge = '<span class="badge badge-error">Closed</span>';
+                submitButton = '<button class="btn btn-secondary btn-full" disabled>Submission Closed</button>';
+            } else {
+                statusBadge = `<span class="badge badge-warning">${timeRemaining}</span>`;
+                submitButton = `
+                    <input type="file" id="file-${task.id}" accept=".pdf" style="display: none;" onchange="handleFileSelect('${task.id}', this)">
+                    <button class="btn btn-primary btn-full" onclick="document.getElementById('file-${task.id}').click()">Submit Task</button>
+                `;
+            }
+
+            return `
+                <div class="card">
+                    <div class="flex-between mb-md">
+                        <span class="badge badge-red">${task.phase}</span>
+                        ${statusBadge}
+                    </div>
+                    <h3 class="mb-md">${task.title}</h3>
+                    <p class="text-muted mb-lg">${task.description}</p>
+                    <div class="mb-md">
+                        <p class="text-muted mb-sm" style="font-size: 0.9rem;">⏰ Deadline: ${formatDeadline(deadline)}</p>
+                        <p class="text-muted mb-sm" style="font-size: 0.9rem;">🎯 Max Marks: ${task.maxMarks}</p>
+                    </div>
+                    ${submitButton}
+                </div>
+            `;
+        }
+
+        // Handle file selection and submission
+        async function handleFileSelect(taskId, input) {
+            const file = input.files[0];
+            if (!file) return;
+
+            // Validate PDF
+            if (file.type !== 'application/pdf') {
+                alert('Please upload only PDF files');
+                input.value = '';
+                return;
+            }
+
+            // Validate size (10MB)
+            if (file.size > 10 * 1024 * 1024) {
+                alert('File size should not exceed 10MB');
+                input.value = '';
+                return;
+            }
+
+            // Submit task
+            const result = await API.submitTask(taskId, file.name);
+
+            if (result.success) {
+                alert('✅ Task submitted successfully!');
+                loadTasks(); // Reload tasks
+            } else {
+                alert('❌ Submission failed: ' + result.message);
+                input.value = '';
+            }
+        }
+
+        // Format deadline
+        function formatDeadline(date) {
+            return date.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        // Get time remaining
+        function getTimeRemaining(deadline) {
+            const now = new Date();
+            const diff = deadline - now;
+
+            if (diff <= 0) return 'Expired';
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+
+            if (days > 0) return `${days} day${days > 1 ? 's' : ''} left`;
+            if (hours > 0) return `${hours} hour${hours > 1 ? 's' : ''} left`;
+            return 'Less than 1 hour';
+        }
+
+        // Logout handler
+        function handleLogout() {
+            if (confirm('Are you sure you want to logout?')) {
+                API.logout();
+                window.location.href = '/login';
+            }
+        }
+
+        // Load dashboard on page load
+        loadDashboard();
+    </script>
+</body>
+
+</html>

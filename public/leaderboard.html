@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard | TEC</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Russo+One&family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <style>
+        .rank-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-weight: bold;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .rank-1 {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: #000;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+        }
+
+        .rank-2 {
+            background: linear-gradient(135deg, #C0C0C0 0%, #808080 100%);
+            color: #000;
+            box-shadow: 0 0 20px rgba(192, 192, 192, 0.6);
+        }
+
+        .rank-3 {
+            background: linear-gradient(135deg, #CD7F32 0%, #8B4513 100%);
+            color: #fff;
+            box-shadow: 0 0 20px rgba(205, 127, 50, 0.6);
+        }
+
+        .filter-section {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: var(--spacing-xl);
+            flex-wrap: wrap;
+        }
+
+        .filter-item {
+            flex: 1;
+            min-width: 200px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="/" class="navbar-logo">
+                <img src="/assets/teclogo.svg" alt="TEC Logo">
+                <span>TEC</span>
+            </a>
+            <div class="navbar-menu" id="navbarMenu">
+                <a href="/" class="navbar-link">Home</a>
+                <a href="/about" class="navbar-link">About</a>
+                <a href="/leaderboard" class="navbar-link active">Leaderboard</a>
+                <a href="/login" class="navbar-link">Login</a>
+                <a href="/register" class="navbar-link btn-primary" style="padding: 0.5rem 1.5rem;">Register</a>
+            </div>
+            <div class="menu-toggle" id="menuToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="section-lg"
+        style="margin-top: 73px; background: linear-gradient(135deg, rgba(255, 24, 1, 0.1) 0%, rgba(0, 0, 0, 0.3) 100%);">
+        <div class="container text-center">
+            <h1 class="fade-in">Competition <span class="text-red">Leaderboard</span></h1>
+            <p class="text-muted" style="font-size: 1.25rem;">Track team rankings and performance</p>
+        </div>
+    </section>
+
+    <!-- Leaderboard Section -->
+    <section class="section">
+        <div class="container">
+            <!-- Filters -->
+            <div class="filter-section">
+                <div class="filter-item">
+                    <label class="form-label">Filter by Phase</label>
+                    <select class="form-select" id="phaseFilter">
+                        <option value="all">All Phases</option>
+                        <option value="registration" selected>Registration Phase</option>
+                        <option value="round1">Task Round 1</option>
+                        <option value="round2">Task Round 2</option>
+                        <option value="final">Final Round</option>
+                    </select>
+                </div>
+                <div class="filter-item">
+                    <label class="form-label">Search Team</label>
+                    <input type="text" class="form-input" id="searchTeam" placeholder="Enter team name or college...">
+                </div>
+            </div>
+
+            <!-- Leaderboard Table -->
+            <div class="table-container">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Team Name</th>
+                            <th>College Name</th>
+                            <th>Total Points</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="background: rgba(255, 215, 0, 0.05);">
+                            <td><span class="rank-badge rank-1">🥇</span></td>
+                            <td><strong>Innovation Mavericks</strong></td>
+                            <td>MIT College of Engineering</td>
+                            <td><span class="text-red" style="font-weight: bold; font-size: 1.1rem;">985</span></td>
+                        </tr>
+                        <tr style="background: rgba(192, 192, 192, 0.05);">
+                            <td><span class="rank-badge rank-2">🥈</span></td>
+                            <td><strong>Tech Titans</strong></td>
+                            <td>VIT University</td>
+                            <td><span class="text-red" style="font-weight: bold; font-size: 1.1rem;">942</span></td>
+                        </tr>
+                        <tr style="background: rgba(205, 127, 50, 0.05);">
+                            <td><span class="rank-badge rank-3">🥉</span></td>
+                            <td><strong>Code Warriors</strong></td>
+                            <td>BITS Pilani</td>
+                            <td><span class="text-red" style="font-weight: bold; font-size: 1.1rem;">918</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>4</strong></td>
+                            <td>Startup Ninjas</td>
+                            <td>IIT Bombay</td>
+                            <td><strong>876</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>5</strong></td>
+                            <td>Digital Innovators</td>
+                            <td>NIT Trichy</td>
+                            <td><strong>845</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>6</strong></td>
+                            <td>Future Founders</td>
+                            <td>Delhi Technological University</td>
+                            <td><strong>812</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>7</strong></td>
+                            <td>Venture Pioneers</td>
+                            <td>SRM Institute of Technology</td>
+                            <td><strong>789</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>8</strong></td>
+                            <td>Idea Catalysts</td>
+                            <td>Manipal Institute of Technology</td>
+                            <td><strong>765</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>9</strong></td>
+                            <td>Spark Ventures</td>
+                            <td>VJTI Mumbai</td>
+                            <td><strong>742</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>10</strong></td>
+                            <td>Dream Team</td>
+                            <td>IIIT Hyderabad</td>
+                            <td><strong>718</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>11</strong></td>
+                            <td>Alpha Entrepreneurs</td>
+                            <td>PES University</td>
+                            <td><strong>695</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>12</strong></td>
+                            <td>Phoenix Rising</td>
+                            <td>NSIT Delhi</td>
+                            <td><strong>672</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>13</strong></td>
+                            <td>Vision Quest</td>
+                            <td>COEP Pune</td>
+                            <td><strong>648</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>14</strong></td>
+                            <td>Momentum Makers</td>
+                            <td>Symbiosis Institute of Technology</td>
+                            <td><strong>625</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>15</strong></td>
+                            <td>Nexus Innovators</td>
+                            <td>PICT Pune</td>
+                            <td><strong>602</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>16</strong></td>
+                            <td>Quantum Leap</td>
+                            <td>NITK Surathkal</td>
+                            <td><strong>578</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>17</strong></td>
+                            <td>Prime Movers</td>
+                            <td>Thapar Institute of Engineering</td>
+                            <td><strong>555</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>18</strong></td>
+                            <td>Impact Creators</td>
+                            <td>PESIT Bangalore</td>
+                            <td><strong>532</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>19</strong></td>
+                            <td>Trailblazers</td>
+                            <td>BMS College of Engineering</td>
+                            <td><strong>508</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>20</strong></td>
+                            <td>Elite Squad</td>
+                            <td>Ramaiah Institute of Technology</td>
+                            <td><strong>485</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Info Note -->
+            <div class="glass-card mt-xl text-center">
+                <p class="text-muted">🏆 Rankings are updated every 24 hours based on task submissions and evaluation
+                    scores.</p>
+                <p class="text-muted mt-sm">Last Updated: February 13, 2026 at 10:00 AM IST</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>TEC</h4>
+                    <p class="text-muted">Technical Excellence Challenge - A platform for innovation and
+                        entrepreneurship.</p>
+                    <p class="text-muted mt-md">Organized by E-Cell</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <div class="footer-links">
+                        <a href="/" class="footer-link">Home</a>
+                        <a href="/about" class="footer-link">About</a>
+                        <a href="/leaderboard" class="footer-link">Leaderboard</a>
+                        <a href="/register" class="footer-link">Register</a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <div class="footer-links">
+                        <a href="mailto:tec@ecell.com" class="footer-link">tec@ecell.com</a>
+                        <a href="tel:+919876543210" class="footer-link">+91 98765 43210</a>
+                        <p class="text-muted mt-md">Your College Name<br>City, State - 123456</p>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Follow Us</h4>
+                    <div class="footer-links">
+                        <a href="#" class="footer-link">Instagram</a>
+                        <a href="#" class="footer-link">LinkedIn</a>
+                        <a href="#" class="footer-link">Twitter</a>
+                        <a href="#" class="footer-link">Facebook</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 TEC - Technical Excellence Challenge. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="/js/navigation.js"></script>
+    <script src="/js/main.js"></script>
+</body>
+
+</html>
