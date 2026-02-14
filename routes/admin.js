@@ -1,13 +1,14 @@
 const express = require('express');
+
 const router = express.Router();
 const {
-    getStats,
-    getAllTeams,
-    createPhase,
-    getPhases,
-    activatePhase,
-    createTask,
-    getAllTasks
+  getStats,
+  getAllTeams,
+  createPhase,
+  getPhases,
+  activatePhase,
+  createTask,
+  getAllTasks,
 } = require('../controllers/adminController');
 const { protect } = require('../middleware/auth');
 const { authorize } = require('../middleware/roleCheck');

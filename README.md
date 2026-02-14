@@ -38,23 +38,27 @@ TEC-ECellMET/
 ## 🛠️ Installation & Setup
 
 ### Prerequisites
+
 - Node.js (v14 or higher)
 - npm (comes with Node.js)
 
 ### Installation Steps
 
 1. **Install Dependencies**
+
 ```bash
 npm install
 ```
 
 2. **Start the Server**
+
 ```bash
 npm start
 ```
 
 3. **Access the Website**
-Open your browser and navigate to:
+   Open your browser and navigate to:
+
 ```
 http://localhost:8080
 ```
@@ -62,6 +66,7 @@ http://localhost:8080
 ## 📄 Pages Overview
 
 ### Public Pages
+
 - **Home** (`/`) - Landing page with Hero section, About TEC, How It Works, Competition Phases, Timeline, Benefits, and CTA
 - **About** (`/about`) - Detailed information about competition, objectives, rules, eligibility, and contact
 - **Leaderboard** (`/leaderboard`) - Real-time team rankings with filters and search
@@ -69,6 +74,7 @@ http://localhost:8080
 - **Login** (`/login`) - User authentication page
 
 ### Dashboard Pages (After Login)
+
 - **Dashboard** (`/dashboard`) - Overview with stats, deadlines, active tasks, and recent submissions
 - **My Team** (`/team`) - Team information and member management
 - **Tasks** (`/tasks`) - View and manage competition tasks
@@ -77,16 +83,19 @@ http://localhost:8080
 ## 🎨 Design System
 
 ### Colors
+
 - **Primary**: `#FF1801` (F1 Red)
 - **Background**: `#050505` (Deep Black)
 - **Grays**: `#0a0a0a`, `#1a1a1a`, `#2a2a2a`
 
 ### Typography
+
 - **Headings**: Orbitron (700, 900)
 - **Body**: Inter (300-700)
 - **Accents**: Montserrat (500, 600)
 
 ### Components
+
 - Cards with hover effects
 - Glass morphism elements
 - Gradient buttons
@@ -99,17 +108,20 @@ http://localhost:8080
 The server is ready for MongoDB integration. Update `server.js` to add:
 
 1. **MongoDB Connection**
+
 ```javascript
 const mongoose = require('mongoose');
 mongoose.connect('your-mongodb-uri');
 ```
 
 2. **User Authentication**
+
 - Implement JWT tokens
 - Add session management
 - Create user model
 
 3. **API Endpoints**
+
 - `/api/register` - Team registration
 - `/api/login` - User authentication
 - `/api/tasks` - Fetch tasks
@@ -161,6 +173,7 @@ This codebase is designed to be beginner-friendly:
 ## 📞 Support
 
 For any issues or questions:
+
 - Email: tec@ecell.com
 - Phone: +91 98765 43210
 

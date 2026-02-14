@@ -1,0 +1,235 @@
+{
+  "env": {
+    "browser": true,
+    "es2023": true,
+    "node": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:react/jsx-runtime",
+    "plugin:react-hooks/recommended",
+    "plugin:jsx-a11y/recommended",
+    "plugin:import/recommended",
+    "plugin:import/react",
+    "prettier"
+  ],
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "plugins": ["react", "react-hooks", "jsx-a11y", "import"],
+  "rules": {
+    // ===== CODE QUALITY =====
+    // Prevent unused variables (critical for bundle size)
+    "no-unused-vars": [
+      "error",
+      {
+        "vars": "all",
+        "args": "after-used",
+        "ignoreRestSiblings": true,
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_"
+      }
+    ],
+    // No console.log in production (use proper logging)
+    "no-console": [
+      "warn",
+      {
+        "allow": ["warn", "error"]
+      }
+    ],
+    // Prevent debugger statements
+    "no-debugger": "error",
+    // Prevent unreachable code (dead code elimination)
+    "no-unreachable": "error",
+    // Require const for variables that are never reassigned
+    "prefer-const": "error",
+    // Prevent var usage (use let/const)
+    "no-var": "error",
+    // Enforce === over ==
+    "eqeqeq": [
+      "error",
+      "always",
+      {
+        "null": "ignore"
+      }
+    ],
+    // Prevent confusing arrow functions
+    "no-confusing-arrow": [
+      "error",
+      {
+        "allowParens": true
+      }
+    ],
+    // ===== PERFORMANCE =====
+    // Prevent expensive operations in JSX
+    "react/jsx-no-bind": [
+      "warn",
+      {
+        "allowArrowFunctions": false,
+        "allowBind": false,
+        "ignoreRefs": true
+      }
+    ],
+    // Prevent unused prop-types (dead code)
+    "react/no-unused-prop-types": "warn",
+    // Prevent direct mutation of state
+    "react/no-direct-mutation-state": "error",
+    // Prevent usage of dangerous properties
+    "react/no-danger": "warn",
+    // Prevent unnecessary fragments
+    "react/jsx-no-useless-fragment": "warn",
+    // Prevent creating new objects/arrays in JSX (causes re-renders)
+    "react/jsx-no-constructed-context-values": "error",
+    // ===== REACT BEST PRACTICES =====
+    // Enforce hook rules (critical)
+    "react-hooks/rules-of-hooks": "error",
+    // Check effect dependencies
+    "react-hooks/exhaustive-deps": "warn",
+    // Prevent missing key prop
+    "react/jsx-key": [
+      "error",
+      {
+        "checkFragmentShorthand": true,
+        "checkKeyMustBeforeSpread": true
+      }
+    ],
+    // Prevent missing displayName
+    "react/display-name": "off",
+    // Allow prop spreading (common pattern with {...props})
+    "react/jsx-props-no-spreading": "off",
+    // Enforce boolean naming for props
+    "react/boolean-prop-naming": [
+      "warn",
+      {
+        "rule": "^(is|has|should|can|will|did)[A-Z]([A-Za-z0-9]?)+",
+        "validateNested": true
+      }
+    ],
+    // Prevent unsafe lifecycle methods
+    "react/no-unsafe": "error",
+    // Enforce self-closing components
+    "react/self-closing-comp": "error",
+    // Prevent void DOM elements with children
+    "react/void-dom-elements-no-children": "error",
+    // Disable prop-types (we're using modern React)
+    "react/prop-types": "off",
+    // ===== ACCESSIBILITY =====
+    // Enforce accessible emojis
+    "jsx-a11y/accessible-emoji": "off",
+    // Require alt text for images
+    "jsx-a11y/alt-text": "error",
+    // Enforce anchor has content
+    "jsx-a11y/anchor-has-content": "error",
+    // No autofocus
+    "jsx-a11y/no-autofocus": "warn",
+    // Click events need keyboard events
+    "jsx-a11y/click-events-have-key-events": "warn",
+    // Interactive elements need role
+    "jsx-a11y/no-static-element-interactions": "warn",
+    // Media needs captions
+    "jsx-a11y/media-has-caption": "warn",
+    // ===== IMPORT ORGANIZATION =====
+    // Prevent duplicate imports
+    "import/no-duplicates": "error",
+    // Ensure imports point to files that exist
+    "import/no-unresolved": "off",
+    // Prevent circular dependencies
+    "import/no-cycle": "warn",
+    // Prevent importing from dev dependencies in src
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": [
+          "**/*.test.{js,jsx}",
+          "**/*.spec.{js,jsx}",
+          "**/vite.config.js",
+          "**/tailwind.config.js",
+          "**/postcss.config.js"
+        ]
+      }
+    ],
+    // Order imports
+    "import/order": [
+      "error",
+      {
+        "groups": ["builtin", "external", "internal", "parent", "sibling", "index"],
+        "pathGroups": [
+          {
+            "pattern": "react",
+            "group": "external",
+            "position": "before"
+          },
+          {
+            "pattern": "@/**",
+            "group": "internal"
+          }
+        ],
+        "pathGroupsExcludedImportTypes": ["react"],
+        "newlines-between": "always",
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true
+        }
+      }
+    ],
+    // Prefer default export for single export
+    "import/prefer-default-export": "off",
+    // Enforce file extensions
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "js": "never",
+        "jsx": "never"
+      }
+    ],
+    // No default export (prefer named exports for better refactoring)
+    "import/no-default-export": "off",
+    // No named as default
+    "import/no-named-as-default": "warn",
+    // No named as default member
+    "import/no-named-as-default-member": "warn",
+    // ===== ADDITIONAL QUALITY RULES =====
+    // Prevent alert/confirm/prompt
+    "no-alert": "warn",
+    // Prevent eval
+    "no-eval": "error",
+    // Prevent implied eval
+    "no-implied-eval": "error",
+    // Prevent nested ternaries (readability)
+    "no-nested-ternary": "warn",
+    // Prevent param reassignment
+    "no-param-reassign": [
+      "error",
+      {
+        "props": false
+      }
+    ],
+    // Prevent return assignment
+    "no-return-assign": "error",
+    // Prevent script URLs
+    "no-script-url": "error",
+    // Prefer arrow callbacks
+    "prefer-arrow-callback": "warn",
+    // Prefer template literals
+    "prefer-template": "warn",
+    // Require await in async
+    "require-await": "warn"
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    },
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx"]
+      }
+    }
+  },
+  "ignorePatterns": ["dist", "build", "node_modules", "*.config.js", "public"]
+}

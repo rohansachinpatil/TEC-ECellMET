@@ -4,20 +4,20 @@
 
 @layer base {
   :root {
-    --f1-red: #FF1801;
+    --f1-red: #ff1801;
     --deep-black: #050505;
   }
-  
+
   * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
   }
-  
+
   html {
     scroll-behavior: smooth;
   }
-  
+
   body {
     background-color: var(--deep-black);
     color: white;
@@ -32,18 +32,26 @@
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.1);
   }
-  
+
   .text-gradient {
-    background: linear-gradient(135deg, #fff 0%, #FF1801 100%);
+    background: linear-gradient(135deg, #fff 0%, #ff1801 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
-  
+
   .carbon-fiber {
     background:
-      radial-gradient(ellipse farthest-corner at 0% 50%, rgba(50, 50, 50, 0.9) 0%, rgba(0, 0, 0, 0) 50%),
-      radial-gradient(ellipse farthest-corner at 100% 50%, rgba(50, 50, 50, 0.9) 0%, rgba(0, 0, 0, 0) 50%);
+      radial-gradient(
+        ellipse farthest-corner at 0% 50%,
+        rgba(50, 50, 50, 0.9) 0%,
+        rgba(0, 0, 0, 0) 50%
+      ),
+      radial-gradient(
+        ellipse farthest-corner at 100% 50%,
+        rgba(50, 50, 50, 0.9) 0%,
+        rgba(0, 0, 0, 0) 50%
+      );
     background-size: 4px 4px;
     background-color: #0a0a0a;
   }

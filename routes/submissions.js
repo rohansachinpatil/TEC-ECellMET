@@ -1,11 +1,12 @@
 const express = require('express');
+
 const router = express.Router();
 const {
-    submitTask,
-    getAllMySubmissions,
-    getMySubmission,
-    getSubmissionsByTask,
-    gradeSubmission
+  submitTask,
+  getAllMySubmissions,
+  getMySubmission,
+  getSubmissionsByTask,
+  gradeSubmission,
 } = require('../controllers/submissionController');
 const { protect } = require('../middleware/auth');
 const { authorize } = require('../middleware/roleCheck');
