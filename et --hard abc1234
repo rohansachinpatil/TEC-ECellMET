@@ -1,0 +1,66 @@
+[33mcommit 68ca2a4dc4168554b8b7213d26ed86a5acd20a8c[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: Relvixx <relvixx89@gmail.com>
+Date:   Sun Feb 15 12:52:43 2026 +0530
+
+    feat: Introduce task submission API, ContactSection, and Navbar components.
+
+[33mcommit c7120845f1ee59aa1c17e17fcb95e5889d965a15[m
+Author: Relvixx <relvixx89@gmail.com>
+Date:   Sun Feb 15 01:10:39 2026 +0530
+
+    feat: Implement core application structure with user authentication, task management, team features, and initial UI components, along with developer tooling.
+
+[33mcommit 0ad5f15ca72de423aa2b47165b2cb057abe5fc4e[m
+Author: Shubham Jadhav <tumhara-github-email>
+Date:   Sat Feb 14 12:40:20 2026 +0530
+
+    openUri() issue fix
+
+[33mcommit 914295778d65bfeec3568eab205e66ed6cd84f04[m
+Merge: eff5f06 ec1a374
+Author: Shubham Jadhav <tumhara-github-email>
+Date:   Fri Feb 13 23:25:23 2026 +0530
+
+    Merge branch 'main' of https://github.com/rohansachinpatil/TEC-ECellMET
+
+[33mcommit eff5f061215dcd319f9d796cd5aa0084fe739766[m
+Author: Shubham Jadhav <tumhara-github-email>
+Date:   Fri Feb 13 23:22:59 2026 +0530
+
+    Implement server-side cookie authentication for robust login
+
+[33mcommit ec1a374b3728b95bd05d043c81f636c86b107961[m
+Author: Relvixx <relvixx89@gmail.com>
+Date:   Fri Feb 13 20:35:20 2026 +0530
+
+    chore: Update dependency lock files.
+
+[33mcommit 6150231932dd1cc9d3a0fb0bbdf74b58623a6072[m
+Author: Shubham Jadhav <tumhara-github-email>
+Date:   Fri Feb 13 18:26:23 2026 +0530
+
+    ip change
+
+[33mcommit e8850521edb36bfbe48101fc191a80de1183f955[m
+Author: Shubham Jadhav <tumhara-github-email>
+Date:   Fri Feb 13 17:13:10 2026 +0530
+
+    Update codebase and configure gitignore
+
+[33mcommit a13e649b7c427cbb6d22b74090d44b28f0db7376[m
+Author: Rohan Patil <rohanspatil801@gmail.com>
+Date:   Mon Feb 9 20:45:23 2026 +0530
+
+    Update year in README from 2024 to 2026
+
+[33mcommit d8fad74fb044de8075bf5f93ad339223503980b4[m
+Author: rohansachinpatil <rohanspatil801@gmail.com>
+Date:   Mon Feb 9 20:44:21 2026 +0530
+
+    Add comprehensive README with installation, features, and customization guide
+
+[33mcommit 3f4253697b0dc01832b5dead81030d123db79ee1[m
+Author: rohansachinpatil <rohanspatil801@gmail.com>
+Date:   Mon Feb 9 20:41:54 2026 +0530
+
+    Initial commit: TEC E-Cell landing page with F1 racing theme - Features: Scroll-driven hero, interactive timeline, mentors section, teams showcase, contact form, fully mobile responsive
