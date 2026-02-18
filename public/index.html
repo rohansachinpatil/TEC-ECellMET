@@ -18,74 +18,147 @@
     <link rel="stylesheet" href="/css/style.css">
 
     <style>
-        /* Hero Section Specific Styles */
-        #hero {
+        /* ═══════════════════════════════════════════
+           HERO BACKGROUND — F1 Racing Aesthetic
+           4-layer GPU-accelerated composited BG
+           ═══════════════════════════════════════════ */
+
+        /* ── Layer 0: Base Container ── */
+        #hero-section {
             position: relative;
+            min-height: 100vh;
+            width: 100%;
+            overflow: hidden;
+            background-color: #0f0f0f;
+        }
+
+        .hero-bg-wrap {
+            position: sticky;
+            top: 0;
             height: 100vh;
+            width: 100%;
+            overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
-            background: var(--deep-black);
-        }
-
-        .hero-background {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #000000 0%, #1a0000 100%);
             z-index: 0;
         }
 
-        .hero-background::before {
-            content: '';
+        /* ── Layer 1: Carbon-Fiber Dot Grid (Texture) ── */
+        .hero-texture {
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            inset: -64px;                        /* overflow for seamless drift loop */
             background-image:
-                linear-gradient(rgba(255, 24, 1, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 24, 1, 0.03) 1px, transparent 1px);
-            background-size: 50px 50px;
-            animation: gridMove 20s linear infinite;
+                radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px);
+            background-size: 16px 16px;
+            will-change: transform;
+            animation: textureDrift 30s linear infinite;
+            z-index: 1;
+            pointer-events: none;
         }
 
-        @keyframes gridMove {
-            0% {
-                transform: translateY(0);
-            }
 
-            100% {
-                transform: translateY(50px);
-            }
+
+        /* ── Layer 3: Diagonal Speed Lines ── */
+        .hero-speedlines {
+            position: absolute;
+            inset: 0;
+            background-image:
+                /* Primary thick bands */
+                repeating-linear-gradient(
+                    -35deg,
+                    transparent 0px,
+                    transparent 120px,
+                    rgba(255,255,255,0.045) 120px,
+                    rgba(255,255,255,0.045) 170px,
+                    transparent 170px,
+                    transparent 180px,
+                    rgba(255,255,255,0.03) 180px,
+                    rgba(255,255,255,0.03) 220px,
+                    transparent 220px,
+                    transparent 320px
+                ),
+                /* Secondary offset band cluster */
+                repeating-linear-gradient(
+                    -35deg,
+                    transparent 0px,
+                    transparent 200px,
+                    rgba(255,255,255,0.025) 200px,
+                    rgba(255,255,255,0.025) 240px,
+                    transparent 240px,
+                    transparent 260px,
+                    rgba(255,255,255,0.015) 260px,
+                    rgba(255,255,255,0.015) 262px,
+                    transparent 262px,
+                    transparent 280px,
+                    rgba(255,255,255,0.015) 280px,
+                    rgba(255,255,255,0.015) 282px,
+                    transparent 282px,
+                    transparent 500px
+                ),
+                /* Thin accent hairlines */
+                repeating-linear-gradient(
+                    -35deg,
+                    transparent 0px,
+                    transparent 115px,
+                    rgba(255,255,255,0.02) 115px,
+                    rgba(255,255,255,0.02) 117px,
+                    transparent 117px,
+                    transparent 175px,
+                    rgba(255,255,255,0.02) 175px,
+                    rgba(255,255,255,0.02) 177px,
+                    transparent 177px,
+                    transparent 450px
+                );
+            opacity: 0.7;
+            animation: speedLinePulse 8s ease-in-out infinite;
+            z-index: 3;
+            pointer-events: none;
         }
 
+        /* ── Vignette Edge Fade ── */
+        .hero-vignette {
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(
+                    ellipse 100% 100% at 50% 50%,
+                    transparent 40%,
+                    rgba(15,15,15,0.5) 75%,
+                    #0f0f0f 100%
+                );
+            z-index: 4;
+            pointer-events: none;
+        }
+
+        /* ── Keyframes (GPU-only: transform + opacity) ── */
+        @keyframes textureDrift {
+            from { transform: translate3d(0, 0, 0); }
+            to   { transform: translate3d(-64px, 64px, 0); }
+        }
+
+        @keyframes speedLinePulse {
+            0%, 100% { opacity: 0.5; }
+            50%      { opacity: 0.9; }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ── Hero Content (above all layers) ── */
         .hero-content {
             position: relative;
             z-index: 10;
             text-align: center;
-            padding: 0 var(--spacing-md);
+            padding: 0 var(--spacing-md, 1rem);
             animation: fadeInUp 1s ease;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
         }
 
         .hero-logo {
             height: 120px;
-            margin-bottom: var(--spacing-lg);
+            margin-bottom: var(--spacing-lg, 2rem);
             filter: drop-shadow(0 0 20px rgba(255, 24, 1, 0.5));
         }
 
@@ -93,13 +166,14 @@
             font-family: 'Outfit', sans-serif;
             font-size: clamp(1rem, 2vw, 1.5rem);
             letter-spacing: 0.2em;
-            color: var(--white-80);
-            margin-bottom: var(--spacing-xl);
+            color: var(--white-80, rgba(255,255,255,0.8));
+            margin-bottom: var(--spacing-xl, 3rem);
         }
 
+        /* ── Shared Section Utilities (non-hero) ── */
         .feature-icon {
             font-size: 3rem;
-            margin-bottom: var(--spacing-md);
+            margin-bottom: var(--spacing-md, 1rem);
         }
 
         .step-number {
@@ -112,7 +186,7 @@
             justify-content: center;
             font-size: 1.5rem;
             font-weight: bold;
-            margin: 0 auto var(--spacing-md);
+            margin: 0 auto var(--spacing-md, 1rem);
         }
 
         .timeline {
@@ -132,7 +206,7 @@
 
         .timeline-item {
             position: relative;
-            padding-bottom: var(--spacing-xl);
+            padding-bottom: var(--spacing-xl, 3rem);
         }
 
         .timeline-dot {
@@ -155,9 +229,9 @@
 
         .cta-section {
             background: linear-gradient(135deg, rgba(255, 24, 1, 0.1) 0%, rgba(0, 0, 0, 0.3) 100%);
-            padding: var(--spacing-2xl) 0;
-            border-top: 1px solid var(--white-10);
-            border-bottom: 1px solid var(--white-10);
+            padding: var(--spacing-2xl, 4rem) 0;
+            border-top: 1px solid var(--white-10, rgba(255,255,255,0.1));
+            border-bottom: 1px solid var(--white-10, rgba(255,255,255,0.1));
         }
     </style>
 
@@ -270,94 +344,29 @@
     <!-- ===== HOME VIEW (SPA) ===== -->
     <div id="view-home" class="page-view active">
 
-    <!-- Hero Section with Scroll-based Image Sequence -->
-    <section id="hero-section" style="min-height: 300vh; position: relative; z-index: 0;">
-        <!-- Canvas for Image Sequence -->
-        <div style="position: sticky; top: 0; height: 100vh; width: 100%; overflow: hidden; display: flex; align-items: center; justify-content: center; z-index: 0;">
-            <canvas id="hero-canvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
+    <!-- Hero Section — F1 Racing Background -->
+    <section id="hero-section">
+        <div class="hero-bg-wrap">
 
-            <!-- Loading Indicator -->
-            <div id="hero-loading"
-                style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; z-index: 5; transition: opacity 0.5s ease;">
-                <div
-                    style="width: 60px; height: 60px; border: 4px solid rgba(255, 24, 1, 0.2); border-top-color: var(--f1-red); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 1rem;">
-                </div>
-                <p style="color: var(--white-80); font-family: 'Outfit', sans-serif;">Loading TEC Experience...</p>
-            </div>
+            <!-- Layer 1: Carbon-Fiber Dot Grid -->
+            <div class="hero-texture" aria-hidden="true"></div>
 
-            <!-- Hero Content Stage 1 -->
-            <div id="hero-content-1"
-                style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; z-index: 10; width: 90%; max-width: 800px; transition: all 0.6s ease; opacity: 0;">
-                <img src="/assets/teclogo.svg" alt="TEC Logo"
-                    style="display: block; height: 150px; margin: 0 auto 2rem; animation: heroGlow 2s ease-in-out infinite alternate; filter: drop-shadow(0 0 30px rgba(255, 24, 1, 0.7)) drop-shadow(0 0 60px rgba(255, 24, 1, 0.4)) drop-shadow(0 0 100px rgba(255, 24, 1, 0.2));">
-                <p
-                    style="font-family: 'Outfit', sans-serif; font-size: clamp(1rem, 2.5vw, 1.6rem); letter-spacing: 0.15em; color: var(--white-80); margin-bottom: 2.5rem; text-shadow: 0 0 10px rgba(255, 24, 1, 0.4), 0 0 30px rgba(255, 24, 1, 0.2); width: 100%; overflow-wrap: break-word;">
-                    TAKE AN ENTREPRENEURSHIP CHALLENGE
-                </p>
 
-                <a href="/register" class="btn btn-primary btn-lg"
-                    style="box-shadow: 0 0 30px rgba(255, 24, 1, 0.4), 0 0 60px rgba(255, 24, 1, 0.15);">Start Your Engine</a>
-            </div>
 
-            <!-- Hero Content Stage 2 -->
-            <div id="hero-content-2"
-                style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; z-index: 10; width: 90%; max-width: 800px; transition: all 0.6s ease; opacity: 0; pointer-events: none;">
-                <h1
-                    style="font-family: 'Outfit', sans-serif; font-size: clamp(2rem, 5vw, 4rem); font-weight: 900; margin-bottom: 1.5rem; text-shadow: 0 0 30px rgba(255, 24, 1, 0.5);">
-                    3-Month <span style="color: var(--f1-red);">Innovation</span> Saga
-                </h1>
-                <p style="font-size: clamp(1rem, 2vw, 1.5rem); color: var(--white-80); margin-bottom: 2rem;">
-                    Transform Your Ideas into Reality
-                </p>
-                <div style="display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap;">
-                    <div>
-                        <div
-                            style="font-size: 3rem; font-weight: bold; color: var(--f1-red); font-family: 'Outfit', sans-serif;">
-                            6</div>
-                        <p style="color: var(--white-60);">Phases</p>
-                    </div>
-                    <div>
-                        <div
-                            style="font-size: 3rem; font-weight: bold; color: var(--f1-red); font-family: 'Outfit', sans-serif;">
-                            3</div>
-                        <p style="color: var(--white-60);">Months</p>
-                    </div>
-                    <div>
-                        <div
-                            style="font-size: 3rem; font-weight: bold; color: var(--f1-red); font-family: 'Outfit', sans-serif;">
-                            ∞</div>
-                        <p style="color: var(--white-60);">Possibilities</p>
-                    </div>
-                </div>
-            </div>
+            <!-- Layer 3: Diagonal Speed Lines -->
+            <div class="hero-speedlines" aria-hidden="true"></div>
 
-            <!-- Hero Content Stage 3 -->
-            <div id="hero-content-3"
-                style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; z-index: 10; width: 90%; max-width: 800px; transition: all 0.6s ease; opacity: 0; pointer-events: none;">
-                <h2
-                    style="font-family: 'Orbitron', sans-serif; font-size: clamp(1.5rem, 4vw, 3rem); font-weight: 900; margin-bottom: 1.5rem;">
-                    Join <span style="color: var(--f1-red);">Hundreds</span> of Innovators
-                </h2>
-                <p
-                    style="font-size: clamp(1rem, 2vw, 1.25rem); color: var(--white-80); margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">
-                    Compete with talented teams from colleges across the region in this prestigious entrepreneurship
-                    challenge
-                </p>
-                <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
-                    <a href="/register" class="btn btn-primary btn-lg">Register Now</a>
-                    <a href="/about" class="btn btn-secondary btn-lg">Learn More</a>
-                </div>
-            </div>
+            <!-- Layer 4: Vignette Edge Fade -->
+            <div class="hero-vignette" aria-hidden="true"></div>
+
+
+
+
+
         </div>
     </section>
 
     <style>
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
         @keyframes heroGlow {
             0% {
                 filter: drop-shadow(0 0 20px rgba(255, 24, 1, 0.5)) drop-shadow(0 0 40px rgba(255, 24, 1, 0.25)) drop-shadow(0 0 60px rgba(255, 24, 1, 0.1));
