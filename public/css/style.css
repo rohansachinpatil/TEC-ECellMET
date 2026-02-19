@@ -614,386 +614,129 @@ p {
    Premium glassmorphism · Red/Black/White · Racing HUD telemetry
    ================================================================ */
 
-/* ── Top Announcement Strip ── */
-.navbar-strip {
-    width: 100%;
-    background: linear-gradient(90deg, var(--electric-indigo), var(--indigo-dark));
-    text-align: center;
-    padding: 0.4rem 1rem;
-    font-family: var(--font-heading);
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--white);
-    position: relative;
-    z-index: 1001;
-    overflow: hidden;
-}
-
-.navbar-strip::before {
-    content: '';
+/* ── Main Navbar — F1 Minimal Transparent Header ── */
+.navbar {
     position: absolute;
-    inset: 0;
-    background: linear-gradient(
-        90deg,
-        transparent 0%,
-        rgba(255, 255, 255, 0.15) 50%,
-        transparent 100%
-    );
-    animation: strip-shimmer 3s ease-in-out infinite;
-}
-
-@keyframes strip-shimmer {
-    0%, 100% { transform: translateX(-100%); }
-    50%      { transform: translateX(100%); }
-}
-
-.navbar-strip span {
-    position: relative;
-    z-index: 1;
-}
-
-.navbar-strip .strip-highlight {
-    color: var(--neon-cyan);
-    font-weight: 700;
-}
-
-/* ── Main Navbar — Glassmorphism HUD ── */
-.navbar,
-.glass-nav {
-    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     z-index: 1000;
-    background: rgba(5, 5, 15, 0.55);
-    backdrop-filter: blur(20px) saturate(1.4);
-    -webkit-backdrop-filter: blur(20px) saturate(1.4);
-    border-bottom: 1px solid rgba(255, 24, 1, 0.12);
-    box-shadow:
-        0 4px 30px rgba(0, 0, 0, 0.4),
-        inset 0 -1px 0 rgba(255, 24, 1, 0.08);
+    background: transparent;
     transition:
-        background 0.5s var(--ease-out-expo),
-        backdrop-filter 0.5s var(--ease-out-expo),
-        box-shadow 0.5s var(--ease-out-expo),
-        padding 0.4s var(--ease-out-expo);
+        background 0.4s ease,
+        backdrop-filter 0.4s ease;
 }
 
-/* Carbon fiber diagonal racing lines (subtle) */
-.navbar::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: repeating-linear-gradient(
-        -45deg,
-        transparent,
-        transparent 4px,
-        rgba(255, 255, 255, 0.012) 4px,
-        rgba(255, 255, 255, 0.012) 5px
-    );
-    pointer-events: none;
-    z-index: 0;
-}
-
-/* Glowing bottom accent line */
-.navbar::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 5%;
-    width: 90%;
-    height: 2px;
-    background: linear-gradient(90deg,
-        transparent 0%,
-        rgba(255, 24, 1, 0.2) 15%,
-        rgba(255, 24, 1, 0.6) 50%,
-        rgba(255, 24, 1, 0.2) 85%,
-        transparent 100%
-    );
-    z-index: 2;
-    box-shadow: 0 0 10px rgba(255, 24, 1, 0.3);
-}
-
-/* ── Scrolled State — deeper glass ── */
-.navbar.navbar--scrolled,
-.glass-nav.navbar--scrolled {
-    background: rgba(5, 5, 15, 0.92);
-    box-shadow:
-        0 4px 30px rgba(0, 0, 0, 0.6),
-        inset 0 -1px 0 rgba(255, 24, 1, 0.12);
-}
-
-.navbar.navbar--scrolled .navbar-container {
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
+/* ── Scrolled State — subtle dark glass ── */
+.navbar.navbar--scrolled {
+    position: fixed;
+    background: rgba(5, 5, 15, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
 }
 
 .navbar.navbar--scrolled .navbar-logo img {
-    height: 36px;
-}
-
-.navbar.navbar--scrolled .navbar-link {
-    font-size: 0.8rem;
+    height: 85px;
 }
 
 /* ── Navbar Container ── */
 .navbar-container {
-    max-width: 1400px;
+    max-width: 80rem;
     margin: 0 auto;
-    padding: 0.9rem 2rem;
+    padding: 1.5rem 1rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
     position: relative;
     z-index: 1;
-    transition: padding 0.4s var(--ease-out-expo);
 }
 
-/* ── HUD Telemetry Readouts (Decorative) ── */
-.navbar-hud {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    z-index: 0;
-    overflow: hidden;
-}
-
-.hud-readout {
-    position: absolute;
-    font-family: 'Courier New', 'Lucida Console', monospace;
-    font-size: 0.5rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.18);
-    white-space: nowrap;
-}
-
-.hud-tl  { top: 5px; right: 42%; }
-.hud-tr  { top: 5px; right: 22%; }
-.hud-tr2 { top: 5px; right: 3%; }
-.hud-bl  { bottom: 5px; left: 15%; }
-.hud-bl2 { bottom: 5px; left: 30%; }
-
-/* ── Logo with Red Speed Lines ── */
+/* ── Logo — Flat, No Glow ── */
 .navbar-logo {
     display: flex;
     align-items: center;
-    position: relative;
     text-decoration: none;
     flex-shrink: 0;
-    padding-right: 1.5rem;
-    transition: transform 0.3s var(--ease-out-expo);
-}
-
-.navbar-logo:hover {
-    transform: scale(1.04);
-}
-
-/* CSS Red Speed Lines behind logo */
-.logo-speed-lines {
-    position: absolute;
-    top: 50%;
-    left: -30px;
-    transform: translateY(-50%);
-    width: 180px;
-    height: 100%;
-    z-index: 0;
-    pointer-events: none;
-}
-
-/* Ambient red glow behind logo */
-.logo-speed-lines::before {
-    content: '';
-    position: absolute;
-    top: 10%;
-    left: 0;
-    width: 100%;
-    height: 80%;
-    background: radial-gradient(ellipse at 30% 50%,
-        rgba(255, 24, 1, 0.25) 0%,
-        rgba(255, 24, 1, 0.08) 40%,
-        transparent 70%
-    );
-    filter: blur(8px);
-}
-
-/* Swooping speed lines */
-.logo-speed-lines::after {
-    content: '';
-    position: absolute;
-    top: 15%;
-    left: -10px;
-    width: 120%;
-    height: 70%;
-    background:
-        linear-gradient(175deg, transparent 38%, rgba(255, 24, 1, 0.5) 43%, transparent 48%),
-        linear-gradient(170deg, transparent 32%, rgba(255, 24, 1, 0.35) 37%, transparent 42%),
-        linear-gradient(180deg, transparent 48%, rgba(255, 24, 1, 0.2) 53%, transparent 58%);
-    filter: blur(1.5px);
 }
 
 .navbar-logo img {
-    height: 48px;
+    height: 120px;
     width: auto;
     object-fit: contain;
-    position: relative;
-    z-index: 1;
-    filter:
-        drop-shadow(0 0 12px rgba(255, 24, 1, 0.5))
-        drop-shadow(0 0 25px rgba(255, 24, 1, 0.2));
-    transition: height 0.4s var(--ease-out-expo), filter 0.3s ease;
+    margin-top: -37px;
 }
 
-.navbar-logo:hover img {
-    filter:
-        drop-shadow(0 0 18px rgba(255, 24, 1, 0.7))
-        drop-shadow(0 0 35px rgba(255, 24, 1, 0.3));
-}
-
-/* ── Menu Links ── */
+/* ── Menu Links Container ── */
 .navbar-menu {
     display: flex;
     align-items: center;
-    gap: 2.25rem;
+    gap: 2rem;
 }
 
+/* ── Nav Links — Inter, Clean ── */
 .navbar-link {
-    font-family: var(--font-heading);
-    font-weight: 600;
-    font-size: 0.85rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.65);
-    padding: 0.5rem 0;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 0.875rem;
+    color: #d4d4d4;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    transition: color 0.2s ease-in-out;
+    letter-spacing: normal;
+    text-transform: none;
+    padding: 0;
     position: relative;
-    transition:
-        color 0.25s var(--ease-out-expo),
-        transform 0.25s var(--ease-out-expo);
 }
 
 .navbar-link:hover {
-    color: var(--white);
-    transform: translateY(-2px);
+    color: #ffffff;
 }
 
-/* Underline: expands from center on hover */
-.navbar-link::after {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 0;
-    height: 2px;
-    background: var(--electric-indigo);
-    box-shadow: 0 0 8px rgba(255, 24, 1, 0.6);
-    transition: width 0.35s var(--ease-out-expo);
-    border-radius: 1px;
-}
-
-.navbar-link:hover::after {
-    width: 100%;
-}
-
-/* Active link */
 .navbar-link.active {
-    color: var(--white);
-    font-weight: 700;
+    color: #ffffff;
 }
 
-.navbar-link.active::after {
-    width: 100%;
-    background: var(--electric-indigo);
-    box-shadow: 0 0 12px rgba(255, 24, 1, 0.7);
+/* ── Chevron Icon ── */
+.nav-chevron {
+    flex-shrink: 0;
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+}
+
+.navbar-link:hover .nav-chevron {
+    opacity: 1;
 }
 
 /* ── Vertical Divider ── */
 .navbar-divider {
     width: 1px;
-    height: 24px;
-    background: rgba(255, 255, 255, 0.15);
-    margin: 0 0.25rem;
+    height: 1rem;
+    background: #404040;
+    margin: 0 0.5rem;
     flex-shrink: 0;
 }
 
-/* ── REGISTER CTA — Neon Red Outlined Box ── */
+/* ── Register CTA — Sharp, Minimal ── */
 .navbar-cta {
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 0.875rem;
+    color: #ffffff;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border: 1px solid rgba(255, 30, 30, 0.5);
+    background: transparent;
+    border-radius: 2px;
+    transition: border-color 0.2s ease;
     display: inline-flex;
     align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    padding: 0.6rem 1.8rem;
-    font-family: var(--font-heading);
-    font-weight: 700;
-    font-size: 0.85rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--white);
-    background: rgba(255, 24, 1, 0.06);
-    border: 2px solid rgba(255, 24, 1, 0.7);
-    border-radius: 4px;
     cursor: pointer;
-    position: relative;
-    overflow: hidden;
-    text-decoration: none;
-    transition: all 0.35s var(--ease-out-expo);
-    box-shadow:
-        inset 0 0 12px rgba(255, 24, 1, 0.12),
-        0 0 15px rgba(255, 24, 1, 0.25),
-        0 0 40px rgba(255, 24, 1, 0.08);
-    text-shadow: 0 0 8px rgba(255, 24, 1, 0.4);
-    animation: neon-pulse 3s ease-in-out infinite;
-}
-
-/* Subtle inner fill on hover */
-.navbar-cta::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(255, 24, 1, 0.12) 0%, rgba(255, 24, 1, 0.02) 100%);
-    opacity: 0;
-    transition: opacity 0.35s ease;
 }
 
 .navbar-cta:hover {
-    border-color: #FF1801;
-    color: #fff;
-    box-shadow:
-        inset 0 0 20px rgba(255, 24, 1, 0.2),
-        0 0 25px rgba(255, 24, 1, 0.45),
-        0 0 60px rgba(255, 24, 1, 0.15);
-    text-shadow: 0 0 12px rgba(255, 24, 1, 0.7);
-    transform: translateY(-1px);
-}
-
-.navbar-cta:hover::before {
-    opacity: 1;
-}
-
-@keyframes neon-pulse {
-    0%, 100% {
-        box-shadow:
-            inset 0 0 12px rgba(255, 24, 1, 0.12),
-            0 0 15px rgba(255, 24, 1, 0.25),
-            0 0 40px rgba(255, 24, 1, 0.08);
-    }
-    50% {
-        box-shadow:
-            inset 0 0 15px rgba(255, 24, 1, 0.18),
-            0 0 20px rgba(255, 24, 1, 0.35),
-            0 0 50px rgba(255, 24, 1, 0.12);
-    }
-}
-
-.navbar-cta .cta-arrow {
-    font-size: 1.1em;
-    transition: transform 0.3s var(--ease-out-expo);
-}
-
-.navbar-cta:hover .cta-arrow {
-    transform: translateX(3px);
+    border-color: #FF1E1E;
 }
 
 /* ── Mobile Menu Toggle ── */
@@ -1046,6 +789,26 @@ p {
     text-align: center;
     z-index: 10;
     padding: var(--space-3);
+}
+
+
+
+.hero-info-label {
+    font-family: var(--font-heading);
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--white);
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+}
+
+.hero-info-line {
+    flex-grow: 1;
+    width: auto;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--electric-indigo), transparent);
+    margin: 0 1.5rem;
 }
 
 .hero-headline {
@@ -2047,8 +1810,7 @@ input:focus:not(:focus-visible) {
 }
 
 /* Navbar: GPU-composite the blur layer */
-.navbar,
-.glass-nav {
+.navbar {
     will-change: backdrop-filter, background;
     transform: translateZ(0);
     contain: layout;
@@ -2068,6 +1830,10 @@ input:focus:not(:focus-visible) {
 
 /* ========== RESPONSIVE ========== */
 @media (max-width: 768px) {
+    .navbar-logo img {
+        height: 65px;
+    }
+
     .navbar-menu {
         position: fixed;
         top: 0;
@@ -2076,14 +1842,14 @@ input:focus:not(:focus-visible) {
         max-width: 320px;
         height: 100vh;
         background: rgba(5, 5, 15, 0.97);
-        backdrop-filter: blur(30px);
-        -webkit-backdrop-filter: blur(30px);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
         flex-direction: column;
         align-items: flex-start;
         padding: 5rem 2rem 2rem;
         gap: 0;
-        transition: right 0.4s var(--ease-out-expo);
-        border-left: 1px solid rgba(255, 24, 1, 0.2);
+        transition: right 0.4s ease;
+        border-left: 1px solid rgba(255, 255, 255, 0.08);
         box-shadow: -10px 0 40px rgba(0, 0, 0, 0.5);
         z-index: 999;
     }
@@ -2093,7 +1859,7 @@ input:focus:not(:focus-visible) {
     }
 
     .navbar-menu .navbar-link {
-        font-size: 1.1rem;
+        font-size: 1rem;
         padding: 1rem 0;
         width: 100%;
         border-bottom: 1px solid rgba(255, 255, 255, 0.05);
@@ -2107,17 +1873,12 @@ input:focus:not(:focus-visible) {
         margin-top: 1.5rem;
         width: 100%;
         justify-content: center;
-        padding: 1rem;
-        font-size: 1rem;
-        animation: none;
+        padding: 0.75rem 1rem;
+        font-size: 0.875rem;
     }
 
     .menu-toggle {
         display: flex;
-    }
-
-    .navbar-hud {
-        display: none;
     }
 
     .sidebar {

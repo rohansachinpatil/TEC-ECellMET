@@ -11,7 +11,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Teko:wght@300;400;500;600;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Teko:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
 
     <!-- Styles -->
@@ -355,14 +355,16 @@
         /* ── Top Info Bar ── */
         .hero-info-bar {
             position: absolute;
-            top: 12%;
-            left: clamp(1rem, 4vw, 3rem);
-            right: clamp(1rem, 4vw, 3rem);
+            top: 15%;
+            left: 16%;
+            /* right: auto; */ /* Removed to allow fixed width */
+            width: 883.188px; /* CHANGE THIS VALUE to adjust width */
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 0rem;
             opacity: 0;
             animation: fadeInUp 1s ease-out 0.5s forwards;
+            justify-content: space-between;
         }
 
         .hero-info-label {
@@ -377,6 +379,7 @@
 
         .hero-info-line {
             flex: 1;
+            width: 50px;
             height: 1px;
             background: linear-gradient(
                 90deg,
@@ -749,39 +752,7 @@
         <div class="orb orb-3"></div>
     </div>
 
-    <!-- Top Announcement Strip -->
-    <div class="navbar-strip" role="banner" aria-label="Announcement">
-        <span>🏁 Season 2026 — <span class="strip-highlight">Applications Open</span> · Limited Slots Remaining</span>
-    </div>
 
-    <!-- Navbar — F1 HUD Glassmorphism Bar -->
-    <nav class="navbar" id="mainNavbar">
-        <div class="navbar-container">
-            <!-- HUD Telemetry Readouts (Decorative) -->
-            <div class="navbar-hud" aria-hidden="true">
-                <span class="hud-readout hud-tl">G-FORCE: 0.98</span>
-                <span class="hud-readout hud-tr">RPM: 12,580</span>
-                <span class="hud-readout hud-tr2">TIRE TEMP: 85°C</span>
-                <span class="hud-readout hud-bl">RPM: 12,580</span>
-                <span class="hud-readout hud-bl2">TIRE TEMP: 85°C</span>
-            </div>
-            <a href="/" class="navbar-logo" aria-label="TEC Home">
-                <div class="logo-speed-lines" aria-hidden="true"></div>
-                <img src="/assets/teclogo.svg" alt="TEC Logo">
-            </a>
-            <div class="navbar-menu" id="navbarMenu">
-                <a href="/" class="navbar-link active">Home</a>
-                <a href="#about-tec" class="navbar-link" data-spa="scroll">About</a>
-                <a href="/leaderboard" class="navbar-link">Leaderboard</a>
-                <a href="/login" class="navbar-link">Login</a>
-                <span class="navbar-divider"></span>
-                <a href="/register" class="navbar-cta">Register</a>
-            </div>
-            <div class="menu-toggle" id="menuToggle" aria-label="Toggle navigation" role="button" tabindex="0">
-                <span></span><span></span><span></span>
-            </div>
-        </div>
-    </nav>
 
     <!-- ===== HOME VIEW (SPA) ===== -->
     <div id="view-home" class="page-view active">
@@ -789,6 +760,26 @@
     <!-- Hero Section — F1 Racing Background -->
     <section id="hero-section">
         <div class="hero-bg-wrap">
+
+            <!-- Navbar — F1 Minimal Transparent Header -->
+            <nav class="navbar" id="mainNavbar">
+                <div class="navbar-container">
+                    <a href="/" class="navbar-logo" aria-label="TEC Home">
+                        <img src="/assets/logo.png" alt="TEC">
+                    </a>
+                    <div class="navbar-menu" id="navbarMenu">
+                        <a href="/" class="navbar-link active">Home <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="nav-chevron"><polyline points="6 9 12 15 18 9"></polyline></svg></a>
+                        <a href="#about-tec" class="navbar-link" data-spa="scroll">About <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="nav-chevron"><polyline points="6 9 12 15 18 9"></polyline></svg></a>
+                        <a href="/leaderboard" class="navbar-link">Leaderboard <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="nav-chevron"><polyline points="6 9 12 15 18 9"></polyline></svg></a>
+                        <a href="/login" class="navbar-link">Login <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="nav-chevron"><polyline points="6 9 12 15 18 9"></polyline></svg></a>
+                        <span class="navbar-divider"></span>
+                        <a href="/register" class="navbar-cta">Register</a>
+                    </div>
+                    <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation" role="button" tabindex="0">
+                        <span></span><span></span><span></span>
+                    </button>
+                </div>
+            </nav>
 
             <!-- Layer 1: Carbon-Fiber Dot Grid -->
             <div class="hero-texture" aria-hidden="true"></div>

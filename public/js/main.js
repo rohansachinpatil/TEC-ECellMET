@@ -223,43 +223,8 @@ document.addEventListener('DOMContentLoaded', function () {
         }, 3000);
     }
 
-    // ── Glass Nav: scroll-aware strip toggle ──
-    const navbar = document.querySelector('.navbar, .glass-nav');
-    const navStrip = document.querySelector('.navbar-strip');
-    if (navbar) {
-        // Position navbar below the strip initially
-        if (navStrip) {
-            const stripH = navStrip.offsetHeight;
-            navbar.style.top = stripH + 'px';
-        }
-
-        let ticking = false;
-
-        function onScroll() {
-            // Hide the announcement strip on scroll
-            if (navStrip) {
-                if (window.scrollY > 50) {
-                    navStrip.style.transform = 'translateY(-100%)';
-                    navStrip.style.transition = 'transform 0.3s ease';
-                    navbar.style.top = '0';
-                } else {
-                    navStrip.style.transform = 'translateY(0)';
-                    navbar.style.top = navStrip.offsetHeight + 'px';
-                }
-            }
-            ticking = false;
-        }
-
-        window.addEventListener('scroll', function () {
-            if (!ticking) {
-                window.requestAnimationFrame(onScroll);
-                ticking = true;
-            }
-        }, { passive: true });
-
-        // Run once on load in case the page is already scrolled
-        onScroll();
-    }
+    // ── Glass Nav: scroll-aware background ──
+    // (Strip toggle removed — strip no longer exists)
 
     // Add to window for global access
     window.showNotification = showNotification;
