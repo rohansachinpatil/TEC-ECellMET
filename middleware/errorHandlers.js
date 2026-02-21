@@ -1,3 +1,8 @@
+/**
+ * Global Error Handling Middleware
+ * Provides specific error formatting based on environment (development vs production)
+ * and handles database-specific errors gracefully.
+ */
 const AppError = require('../utils/appError');
 
 const handleCastErrorDB = (err) => {
