@@ -24,14 +24,35 @@ process.on('uncaughtException', (err) => {
 const app = express();
 const PORT = process.env.PORT || 8080;
 
-// Connect to MongoDB
+/**
+ * Establishes a connection to the MongoDB database.
+ * Falls back to an in-memory database if connection fails in the development environment.
+ * @async
+ * @function connectDB
+ * @returns {Promise<void>}
+ */
 const connectDB = async () => {
   try {
     const conn = await mongoose.connect(process.env.MONGO_URI);
     console.log(`MongoDB Connected: ${conn.connection.host}`);
   } catch (err) {
-    console.error('MongoDB Connection Error:', err);
-    process.exit(1);
+    console.error('MongoDB Connection Error:', err.message);
+    if (process.env.NODE_ENV === 'development') {
+      console.log('⚠️  Falling back to In-Memory Database (mongodb-memory-server)...');
+      try {
+        const { MongoMemoryServer } = require('mongodb-memory-server');
+        const mongod = await MongoMemoryServer.create();
+        const uri = mongod.getUri();
+        const conn = await mongoose.connect(uri);
+        console.log(`✅  In-Memory MongoDB Connected: ${conn.connection.host}`);
+        console.log('📝  Note: Data will not persist after server restart.');
+      } catch (memErr) {
+        console.error('❌  Failed to start In-Memory Database:', memErr);
+        process.exit(1);
+      }
+    } else {
+      process.exit(1);
+    }
   }
 };
 
