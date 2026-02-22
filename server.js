@@ -36,7 +36,7 @@ const connectDB = async () => {
 };
 
 // Security Middleware
-app.use(helmet()); // Set security HTTP headers
+app.use(helmet({ contentSecurityPolicy: false })); // Set security HTTP headers, but allow external CDNs/scripts
 
 // Limit requests from same API
 const limiter = rateLimit({
